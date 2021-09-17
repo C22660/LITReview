@@ -26,6 +26,9 @@ class Review(models.Model):
         to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     time_created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.ticket
+
 
 class UserFollows(models.Model):
     # Your UserFollows model definition goes here
