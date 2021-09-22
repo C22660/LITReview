@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--    Ajoute d'un balise block modifiable dans les autres pages
+                cela pourrait être vide ente les block-->
+        {% block title %}
+            <title>Bienvenue sur LITReview</title>
+        {% endblock %}
+    </head>
+    <body>
+
+        <header>
+            <div class="logo">
+                <p> LITReview </p>
+            </div>
+
+            <nav class="header-nav">
+                <ul>
+                    <li><a class="link" id="Flux" href="#">Flux</a></li>
+                    <li></li>
+                    <li><a class="link" id="Posts" href="#">Posts</a></li>
+                    <li></li>
+                    <li><a class="link" id="Abonnements" href="#">Abonnements</a></li>
+                    <li></li>
+                    <li><a class="link" id="Deconnexion" href="#">Se déconnecter</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section id="page_content">
+            {% block content %}
+            {% endblock %}
+        </section>
+
+        <footer>
+            <p>Copyright LitReview - Tous droits réservés<br />
+            <a href="#">Nous contacter !</a></p>
+        </footer>
+
+    </body>
+</html>

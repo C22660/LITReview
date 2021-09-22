@@ -55,7 +55,10 @@ ROOT_URLCONF = 'LitReview.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "LitReview/templates")],
+        'DIRS': [os.path.join(BASE_DIR, "LitReview/templates"),
+                 os.path.join(BASE_DIR, "templates")],
+        # DIRS sans os.path depuis django 3.1.7
+        # 'DIRS': [BASE_DIR, "LitReview/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-FR'
 
 TIME_ZONE = 'UTC'
 

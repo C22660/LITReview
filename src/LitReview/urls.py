@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path
 
 from .views import index
+from .views import signup
 
 urlpatterns = [
     path('', index, name="index"),
+    path('signup', signup, name='signup'),
     path('administration-application/', admin.site.urls),
 ]
