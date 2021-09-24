@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'criticizesApp',
+    'criticizes',
 ]
 
 MIDDLEWARE = [
@@ -55,8 +55,9 @@ ROOT_URLCONF = 'LitReview.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "LitReview/templates"),
-                 os.path.join(BASE_DIR, "templates")],
+        # 'DIRS': [os.path.join(BASE_DIR, "LitReview/templates"),
+        #          os.path.join(BASE_DIR, "templates")],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         # DIRS sans os.path depuis django 3.1.7
         # 'DIRS': [BASE_DIR, "LitReview/templates"],
         'APP_DIRS': True,
@@ -122,3 +123,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")

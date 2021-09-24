@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Formulaire d'inscription</title>
+{% endblock %}
+
+{% block content %}
+
+    <h1>Inscrivez-vous</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+
+
+        <input type="button" value="Retourner">
+        <input type="submit" value="S'inscrire">
+    </form>
+            {% if error %}
+        <h3 style="color: red;">
+            {{ error }}
+        </h3>
+        {% endif %}
+
+{% endblock %}

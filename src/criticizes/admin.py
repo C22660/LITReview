@@ -1,9 +1,9 @@
 from django.contrib import admin
 
 # Register your models here.
-from criticizesApp.models import Ticket
-from criticizesApp.models import Review
-from criticizesApp.models import UserFollows
+from criticizes.models import Ticket
+from criticizes.models import Review
+from criticizes.models import UserFollows
 
 
 
