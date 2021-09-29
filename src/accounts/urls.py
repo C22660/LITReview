@@ -7,5 +7,5 @@ app_name = "accounts"
 
 urlpatterns = [
     path('compte/', include('django.contrib.auth.urls')),
-    path('compte/signup', signup, name='signup'),
+    path('compte/nouveau', signup, name='signup'),
 ]

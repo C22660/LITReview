@@ -25,12 +25,15 @@ urlpatterns = [
     path('LitReview/', include('criticizes.urls')),
     path('LitReview/', include('accounts.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns += static(
+#         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # urlpatterns = [
 #     path('', index, name="index"),
 #     path('administration-application/', admin.site.urls),
 #     path('LitReview/', include('criticizes.urls')),
-# ]
+# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # path('signup', signup, name='signup'),
 # path('ticket/', ticket_view, name="ticket")

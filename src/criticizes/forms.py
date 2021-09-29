@@ -22,3 +22,19 @@ class TicketForm(forms.ModelForm):
 
         # si on avait mis la date, on pourrais modifier le widget :
         # widgets = {"date": forms.SelecDateWidget(years=range(1998, 2040)}
+
+
+        # ---- pour recupérer user, surgage de sav selon modèle Thierry C, avec passage en class
+        # sur la vue ---
+        # ---> msg erreur : TypeError: __init__() takes 1 positional argument but 2 were given
+        # def __init__(self, *args, **kwargs):
+        #     self.request = kwargs.pop('request')
+        #     super().__init__(*args, **kwargs)
+        #
+        # def save(self, commit=True):
+        #     instance = super().save(commit=False)
+        #     # C'est ici, dans save() qu'on récupère l'utilisateur à partir de la request
+        #     instance.user = self.request.user
+        #     if commit:
+        #         instance.save()
+        #     return instance

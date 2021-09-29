@@ -5,12 +5,19 @@
     <title>Title</title>
 </head>
 <body>
+    <div>
+        <p>Inscrivez-vous maintenant</p>
+        <input type="button" onclick="window.location.pathname = 'LitReview/compte/nouveau';" value="S'inscrire"/>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Se connecter">
-</form>
+    </div>
 
+    <div>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Se connecter">
+        </form>
+    </div>
 </body>
 </html>

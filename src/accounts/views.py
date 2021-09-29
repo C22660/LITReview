@@ -29,4 +29,4 @@ def signup(request):
         form = SignupForm()
 
     # dans ce return, on retourne le formulaire qui contient les données
-    return render(request, "criticizes/signup.html", {'form': form})
+    return render(request, "accounts/signup.html", {'form': form})

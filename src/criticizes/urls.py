@@ -1,6 +1,7 @@
 from django.urls import path
 
 from criticizes.views import ticket_view
+# from criticizes.views import TicketView
 
 # chemin des urls
 app_name = "criticizes"
