@@ -14,7 +14,7 @@ class Ticket(models.Model):
     # pour éviter que tous les tickets ne soient supprimer si user supprimer, on peut utiliser
     # on_delete=models.SET_NULL, null=True, blank=True au lieu de on_delete=models.CASCADE
     image = models.ImageField(null=True, blank=True, upload_to='ticket_images')
-    time_created = models.DateTimeField(null=True, blank=True)
+    time_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -47,3 +47,9 @@ class UserFollows(models.Model):
         # ensures we don't get multiple UserFollows instances
         # for unique user-user_followed pairs
         unique_together = ('user', 'followed_user', )
+
+        # A TESTER (sauf si retour ano) (& ajouter ne property si besoin vid TH 54 4')  :
+        # def already_followed(self):
+        #     if self.unique_together:
+        #         return "Utilisateur déjà suivi"
+

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Onglet d'abonnement</title>
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        <section class="suivis">
+        <h1>Suivre d'autres utilisateurs</h1>
+        <form method="POST" enctype="multipart/form-data">
+<!--        <form method="POST">-->
+        {% csrf_token %}
+        {{ form.as_p }}
+
+
+        <input type="submit" value="Envoyer">
+<!--         <button type="submit">Envoyer</button>-->
+<!--        </form>-->
+<!--        {% if error %}-->
+<!--        <h3 style="color: red;">-->
+<!--            {{ error }}-->
+<!--        </h3>-->
+<!--        {% endif %}-->
+        </section>
+
+        <section class="abonnements">
+            <h1>Abonnements</h1>
+        </section>
+
+        <section class="abonnes">
+            <h1>Abonnés</h1>
+        </section>
+    </div>
+
+
+
+{% endblock %}
