@@ -15,11 +15,11 @@ def signup(request):
         if form.is_valid():
             # Une façon de récupérer le password après form.is_valid
             # password = form.cleaned_data['password']
-            print(form.cleaned_data)
+            # print(form.cleaned_data)
             username = form.cleaned_data['user_name']
             password = form.cleaned_data['password']
 
-            User.objects.create(username=username, password=password)
+            User.objects.create_user(username=username, password=password)
 
             # inscription = form.save()
             # form.save()

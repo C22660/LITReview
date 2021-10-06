@@ -36,6 +36,7 @@ class Review(models.Model):
 
     # si ajout du slug surcharge de la fonction save (video 141, minute 11)
 
+
 class UserFollows(models.Model):
     # Your UserFollows model definition goes here
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
@@ -52,4 +53,3 @@ class UserFollows(models.Model):
         # def already_followed(self):
         #     if self.unique_together:
         #         return "Utilisateur déjà suivi"
-

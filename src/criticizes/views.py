@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.views.generic import ListView
+
 
 from criticizes.forms import TicketForm, ReviewForm, UserFollowsForm
-from criticizes.models import UserFollows
+from criticizes.models import UserFollows, Ticket
+
 
 # sous forme de fonction
 @login_required
@@ -20,41 +20,12 @@ def ticket_view(request):
             ticket = form.save(commit=False)
             ticket.user = request.user
             ticket.save()
-            # form.save()
-            # pour éviter une sauvegarde automatique avec form.save() et que l'on veut pouvoir
-            # ajouter une action (en fonction des champs existants, ex ici avec published
-            # ticket_post = form.save(commit=False)
-            # ticket_post.published = True
-            # ticket_post.save()
-#
-#     # Solution source cours GB OpenclassRoom
-#     # --> msg erreur : image = TicketForm.save(commit=False)
-#     # ---> TypeError: save() missing 1 required positional argument: 'self'
-#     # form = TicketForm()
-#     # if request.method == "POST":
-#     #     form = TicketForm(request.POST, request.FILES)
-#     #     if form.is_valid():
-#     #         image = TicketForm.save(commit=False)
-#     #         image.uploader = request.user
-#     #         image.save()
-#
+
     else:
         form = TicketForm()
 
     return render(request, "criticizes/tickets.html", {"form": form})
 
-
-# sous forme de class selon modèle Thierry C, suite surcharge sav() dans forms
-# --> msg erreur TypeError: __init__() takes 1 positional argument but 2 were given
-# class TicketView(CreateView):
-#     form_class = TicketForm
-#     template_name = 'criticizes/tickets.html'
-#     success_url = reverse_lazy('criticizes/tickets.html')
-#
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['request'] = self.request
-#         return kwargs
 
 @login_required
 def review_view(request):
@@ -68,8 +39,12 @@ def review_view(request):
 
     return render(request, "criticizes/criticism.html", {"form": form})
 
+
 @login_required
 def user_follow_view(request):
+    """
+    Affiche un champ de texte pour y indiquer le nom de l'utilisateur à suivre
+    """
     # Solution selon TH Udemy
     if request.method == "POST":
         form = UserFollowsForm(request.POST)
@@ -89,3 +64,39 @@ def user_follow_view(request):
         form = UserFollowsForm()
 
     return render(request, "criticizes/followers.html", {"form": form})
+
+
+def list_followers(request):
+    """
+    Recherche, dans UserFollows les relations.
+    D'abord les abonnements de l'utilisateur connecté, puis ses abonnés
+    """
+    # users = UserFollows.objects.all()
+
+    pk_connected_user = request.user.pk
+    followed_by_user = UserFollows.objects.filter(followed_user=pk_connected_user)
+
+    user_followed_by = request.user.following.all()
+    template = 'criticizes/summary_followers.html'
+    # template = 'criticizes/followers.html'
+    context = {'followed_by_user': followed_by_user, 'user_followed_by': user_followed_by}
+    return render(request, template, context)
+
+
+def delete_subscription(request):
+    """
+    Supprime l'abonnement dans le table UserFollows par la suppression de la PK de l'enregistrement
+    collecté depuis la page html et de la donnée issue de def list_followers
+    """
+    pk_in_database = request.POST.get('primary_key_of_subsciption')
+    # Recherche de la ligne correspondante à la PK dans la BD
+    recording_in_UserFollows = UserFollows.objects.get(pk=pk_in_database)
+    # suppression dans la BD
+    recording_in_UserFollows.delete()
+    return redirect('criticizes:summary_followers')
+
+
+class ListTickets(ListView):
+    model = Ticket
+    context_object_name = "tickets"
+    template_name = 'criticizes/flux.html'

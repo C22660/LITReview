@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Récapitulatif followers</title>
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        <section class="suivis">
+        <h1>Suivre d'autres utilisateurs</h1>
+<!--        <form method="POST">-->
+<!--        <form method="POST">-->
+<!--        {% csrf_token %}-->
+<!--        {{ form.as_p }}-->
+
+
+        <input type="submit" value="Envoyer">
+<!--         <button type="submit">Envoyer</button>-->
+<!--        </form>-->
+<!--        {% if error %}-->
+<!--        <h3 style="color: red;">-->
+<!--            {{ error }}-->
+<!--        </h3>-->
+<!--        {% endif %}-->
+        </section>
+
+
+        <section class="abonnements">
+            <h1>Abonnements</h1>
+            {% for follow in followed_by_user %}
+            <table>
+                <tr>
+                  <td>{{ follow.user }}</td>
+                  <td> <form action="{% url 'criticizes:delete-subscription' %}" method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="primary_key_of_subsciption" value="{{ follow.pk }}">
+                      <button type="submit">Désabonner</button>
+                      </form>
+                  </td>
+                </tr>
+
+                  </td>
+<!--                </tr>-->
+            </table>
+<!--            {{ follow }}-->
+<!--            {{ follow.user.username }}-->
+            {% endfor %}
+        </section>
+
+        <section class="abonnes">
+            <h1>Abonnés</h1>
+            {% for following in user_followed_by %}
+<!--            <h1>{{ following.followed_user.username }}</h1>-->
+            <table>
+                <tr>{{ following.followed_user.username }}</tr>
+            </table>
+            {% endfor %}
+        </section>
+    </div>
+
+
+
+{% endblock %}
