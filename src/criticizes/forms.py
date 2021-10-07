@@ -84,7 +84,7 @@ class UserFollowsForm(forms.Form):
             followed = User.objects.get(username=data)
         except User.DoesNotExist:
             raise forms.ValidationError("L'utilisateur est introuvable.")
-        except IntegrityError:
+        except UserFollows.IntegrityError:
             raise forms.ValidationError("L'utilisateur est déjà suivi.")
 
     #     if password != confirmation_password:

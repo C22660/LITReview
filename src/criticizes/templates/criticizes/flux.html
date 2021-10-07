@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Flux</title>
+{% endblock %}
+
+{% block content %}
+
+    <div>
+
+
+        <section class="tickets">
+            <h1>Liste des tickets</h1>
+            {% for ticket in tickets %}
+            <h2>{{ ticket.title }}</h2>
+            <h5> Publié par  <i> {{ ticket.user.username }} </i> {{ticket.time_created|date:'j F Y' }} </h5>
+            {{ ticket.description  }}
+            {% if ticket.image %}
+            <img class="avatar" src={{ ticket.image.url }}>
+
+            {% endif %}
+
+            {% endfor %}
+        </section>
+
+        <section class="abonnes">
+            <h1>Abonnés</h1>
+        </section>
+    </div>
+
+
+
+{% endblock %}

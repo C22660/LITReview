@@ -129,4 +129,5 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles/")
-# LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'criticizes:flux'
+LOGOUT_REDIRECT_URL = 'accounts:login'

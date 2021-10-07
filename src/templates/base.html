@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -8,6 +9,7 @@
         {% block title %}
             <title>Bienvenue sur LITReview</title>
         {% endblock %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}"
     </head>
     <body>
 
@@ -18,15 +20,19 @@
 
             <nav class="header-nav">
                 <ul>
-                    <li><a class="link" id="Flux" href="#">Flux</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a class="link" id="Flux" href="{% url 'criticizes:flux' %}">Flux</a></li>
                     <li></li>
                     <li><a class="link" id="Posts" href="#">Posts</a></li>
                     <li></li>
-                    <li><a class="link" id="Abonnements" href="#">Abonnements</a></li>
+                    <li><a class="link" id="Abonnements" href="{% url 'criticizes:user_follow' %}">Abonnements</a></li>
                     <li></li>
-                    <li><a class="link" id="Deconnexion" href="#">Se déconnecter</a></li>
+                    <li><a class="link" id="Deconnexion" href="{% url 'accounts:logout' %}">Se déconnecter</a></li>
+                    <li></li>
+                    <li id="nameuser">@ {{ user }}</li>
+                    {% endif %}
                 </ul>
-            </nav>
+            </nav class="header-nav">
         </header>
 
         <section id="page_content">

@@ -5,24 +5,23 @@
 {% endblock %}
 
 {% block content %}
-
+<div class="ticket">
     <h1>Créer un ticket</h1>
-
-    <form method="POST" enctype="multipart/form-data">
-<!--        <form method="POST">-->
-        {% csrf_token %}
-        {{ form.as_p }}
-
-
-
+    <section class="ticket-body">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
 
         <input type="submit" value="Envoyer">
+        </form>
+    </section>
+
+
 <!--         <button type="submit">Envoyer</button>-->
-    </form>
             {% if error %}
         <h3 style="color: red;">
             {{ error }}
         </h3>
         {% endif %}
-
+</div>
 {% endblock %}
