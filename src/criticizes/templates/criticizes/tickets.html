@@ -8,12 +8,15 @@
 <div class="ticket">
     <h1>Créer un ticket</h1>
     <section class="ticket-body">
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" id="ticket-form" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
 
-        <input type="submit" value="Envoyer">
+
         </form>
+        <div>
+            <input type="submit" form="ticket-form" value="Envoyer">
+        </div>
     </section>
 
 

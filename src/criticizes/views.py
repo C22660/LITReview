@@ -20,6 +20,9 @@ def ticket_view(request):
             ticket = form.save(commit=False)
             ticket.user = request.user
             ticket.save()
+            # suite déplacement bouton hors form, ajout de form= pour "mise à 0" de la page
+            # après save
+            form = TicketForm()
 
     else:
         form = TicketForm()
@@ -136,3 +139,20 @@ class ListTickets(ListView):
     model = Ticket
     context_object_name = "tickets"
     template_name = 'criticizes/flux.html'
+
+# ------ page posts.html ------
+# @login_required REGARDER SI POSSIBLE QUE SUR UNE FONTION
+class ListPosts(ListView):
+    """
+    N'affiche que les posts réalisés par l'utilisateur connecté
+    """
+    model = Ticket
+    context_object_name = "posts"
+    template_name = 'criticizes/posts.html'
+
+    def get_queryset(self):
+        # on récupère les données retrournées par le queryset
+        queryset = super().get_queryset()
+
+        return queryset.filter(user=self.request.user)
+
