@@ -1,6 +1,10 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
+
+from PIL import Image
+
 
 
 class Ticket(models.Model):
@@ -16,8 +20,24 @@ class Ticket(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to='ticket_images')
     time_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
+    IMAGE_MAX_SIZE = (100, 150)
+
     def __str__(self):
         return self.title
+
+    # Adaptation du format de l'image à un max définit en IMAGE_MAX_SIZE
+    def resize_image(self):
+        image = Image.open(self.image)
+        image.thumbnail(self.IMAGE_MAX_SIZE)
+        image.save(self.image.path)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.resize_image()
+
+    # # après validation d'un ticket, réoriente la page vers la page flux
+    # def get_absolute_url(self):
+    #     return reverse('criticizes:flux')
 
 
 class Review(models.Model):

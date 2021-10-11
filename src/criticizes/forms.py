@@ -70,7 +70,7 @@ class ReviewForm(forms.ModelForm):
 
         # Modification du widget de la notation :
         widgets = {"rating": forms.RadioSelect(choices=RATING_OPTIONS),
-                   "body": forms.Textarea(attrs={'rows':4, 'cols':40})}
+                   "body": forms.Textarea(attrs={'rows': 4})}
 
 
 class UserFollowsForm(forms.Form):

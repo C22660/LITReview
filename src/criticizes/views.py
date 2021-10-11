@@ -1,7 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.views.generic import ListView
+from django.utils.decorators import method_decorator
 
 
 from criticizes.forms import TicketForm, ReviewForm, UserFollowsForm
@@ -20,9 +23,7 @@ def ticket_view(request):
             ticket = form.save(commit=False)
             ticket.user = request.user
             ticket.save()
-            # suite déplacement bouton hors form, ajout de form= pour "mise à 0" de la page
-            # après save
-            form = TicketForm()
+            return HttpResponseRedirect(reverse('criticizes:flux'))
 
     else:
         form = TicketForm()
@@ -31,16 +32,29 @@ def ticket_view(request):
 
 
 @login_required
-def review_view(request):
+def review_view(request, ticket_id=14):
+    # Affiche le ticket concerné
+    ticket_needing_answer = get_object_or_404(Ticket, id=ticket_id)
+
+    # Affiche le formulaire de réponse (notation)
     # Solution selon TH Udemy
     if request.method == "POST":
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            print(form.cleaned_data)
+            review = form.save(commit=False)
+            review.ticket = ticket_needing_answer
+            review.user = request.user
+            review.save()
     else:
         form = ReviewForm()
 
-    return render(request, "criticizes/criticism.html", {"form": form})
+    context = {
+        "ticket_needing_answer": ticket_needing_answer,
+        "form": form,
+    }
+
+    return render(request, "criticizes/criticism.html", context)
 
 
 # @login_required
@@ -135,13 +149,14 @@ def delete_subscription(request):
 
 
 # ------ page flux.html ------
+@method_decorator(login_required, name='dispatch')
 class ListTickets(ListView):
     model = Ticket
     context_object_name = "tickets"
     template_name = 'criticizes/flux.html'
 
 # ------ page posts.html ------
-# @login_required REGARDER SI POSSIBLE QUE SUR UNE FONTION
+@method_decorator(login_required, name='dispatch')
 class ListPosts(ListView):
     """
     N'affiche que les posts réalisés par l'utilisateur connecté
