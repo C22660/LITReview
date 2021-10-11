@@ -115,8 +115,79 @@ footer
     align_items: column;
 }
 
-/*----- Page tickets -----*/
-/*.tickets {
+/*----- Page Flux -----*/
+bodyFlux {
     display: flex;
     align_items: column;
-}*/
+}
+
+/*----- Page criticism -----*/
+.criticism-container {
+    display:flex
+    flex-direction: column;
+}
+
+#title-page-criticism {
+    text-align: center;
+    margin: .5rem 0;
+}
+
+#title-section-view-ticket {
+    margin: .5rem 0;
+}
+
+#date {
+    font-size: 0.8em;
+    text-align: right;
+    margin: .5rem .5rem;
+}
+
+
+.view-ticket-display {
+    border: solid;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.view-ticket-display > h5, h2 {
+    margin: .5rem 0 0 .5rem;
+}
+
+#view-ticket-description {
+    margin: .5rem 0 0 .5rem;
+    margin-bottom: .5rem;
+}
+
+.view-answer-display {
+    display: flex;
+    flex-direction: column;
+}
+
+input, textarea {
+    display: block;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+textarea {
+    padding: .75rem;
+    line-height: 1.5;
+}
+
+textarea, #id_headline {
+    min-width: 800px;
+}
+
+label {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0.5rem 0;
+}
+
+#view-answer-button {
+    margin-left: auto;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
