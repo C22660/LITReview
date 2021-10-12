@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Modifier une critique</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="criticism-container">
+        <h1 id="title-page-criticism">Modifier une critique</h1>
+
+        <section class="view-ticket">
+            <h1 id="title-section-view-ticket">Vous êtes en train modifier votre réponse à : </h1>
+            <div class="view-ticket-display">
+                <p id="date">{{ticket_needing_answer.time_created|date:'f, j F Y' }} </p>
+                <h5> {{ ticket_needing_answer.user.username }} a demandé une critique</h5>
+                <h2>{{ ticket_needing_answer.title }}</h2>
+                    {{ ticket_needing_answer.pk  }}
+                <p id="view-ticket-description"> {{ ticket_needing_answer.description  }} </p>
+                    {% if ticket_needing_answer.image %}
+                    <img class="avatar" src={{ ticket_needing_answer.image.url }}>
+                    {% endif %}
+            </div>
+        </section>
+
+        <section class="view-answer">
+            <h1>Saisie de votre post : </h1>
+            <div class="view-answer-display">
+                <form method="POST" id="view-answer-form" enctype="multipart/form-data">
+        <!--        <form method="POST">-->
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                </form>
+                <div>
+                  <input id='view-answer-button' type="submit" form="view-answer-form" value="Modifier">
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

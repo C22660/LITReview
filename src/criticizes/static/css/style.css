@@ -191,3 +191,33 @@ label {
     cursor: pointer;
     margin-top: 1rem;
 }
+
+/*----- Pages tickets et tickets_update -----*/
+.ticket-container {
+    display:flex
+    flex-direction: column;
+}
+
+#title-page-ticket {
+    text-align: center;
+    margin: .5rem 0;
+}
+
+#id_title {
+    min-width: 800px;
+}
+
+#ticket-form p:last-child {
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+}
+
+#id_image {
+    /* background-color: green; */
+}
+
+#image-clear_id {
+    background-color: yellow;
+}

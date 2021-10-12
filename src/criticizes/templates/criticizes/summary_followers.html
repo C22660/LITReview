@@ -7,24 +7,6 @@
 {% block content %}
 
     <div>
-        <section class="suivis">
-        <h1>Suivre d'autres utilisateurs</h1>
-<!--        <form method="POST">-->
-<!--        <form method="POST">-->
-<!--        {% csrf_token %}-->
-<!--        {{ form.as_p }}-->
-
-
-        <input type="submit" value="Envoyer">
-<!--         <button type="submit">Envoyer</button>-->
-<!--        </form>-->
-<!--        {% if error %}-->
-<!--        <h3 style="color: red;">-->
-<!--            {{ error }}-->
-<!--        </h3>-->
-<!--        {% endif %}-->
-        </section>
-
 
         <section class="abonnements">
             <h1>Abonnements</h1>
@@ -34,7 +16,7 @@
                   <td>{{ follow.user }}</td>
                   <td> <form action="{% url 'criticizes:delete-subscription' %}" method="POST">
                       {% csrf_token %}
-                      <input type="hidden" name="primary_key_of_subsciption" value="{{ follow.pk }}">
+                      <input type="hidden" name="primary_key_of_subscription" value="{{ follow.pk }}">
                       <button type="submit">Désabonner</button>
                       </form>
                   </td>

@@ -67,9 +67,4 @@ class UserFollows(models.Model):
     class Meta:
         # ensures we don't get multiple UserFollows instances
         # for unique user-user_followed pairs
-        unique_together = ('user', 'followed_user', )
-
-        # A TESTER (sauf si retour ano) (& ajouter ne property si besoin vid TH 54 4')  :
-        # def already_followed(self):
-        #     if self.unique_together:
-        #         return "Utilisateur déjà suivi"
+        unique_together = ('user', 'followed_user',)

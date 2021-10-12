@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>Créer un ticket</title>
+    <title>Modifier un ticket</title>
 {% endblock %}
 
 {% block content %}
 <div class="ticket-container">
-    <h1 id="title-page-ticket">Créer un ticket</h1>
+    <h1 id="title-page-ticket">Modifier un ticket</h1>
     <section class="ticket-body">
         <form method="POST" id="ticket-form" enctype="multipart/form-data">
             {% csrf_token %}
@@ -15,7 +15,7 @@
 
         </form>
         <div>
-            <input id='view-answer-button' type="submit" form="ticket-form" value="Envoyer">
+            <input id='view-answer-button' type="submit" form="ticket-form" value="Modifier">
         </div>
     </section>
 
