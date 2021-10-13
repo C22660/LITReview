@@ -1,0 +1,11 @@
+{% load criticizes_extras %}
+<div class="view-ticket-display">
+    <p id="date">{{ticket.time_created|date:'f, j F Y' }} </p>
+    <h5> {{ ticket.user.username }} a demandé une critique</h5>
+    <h2>{{ ticket.title }}</h2>
+        {{ ticket.pk  }}
+    <p id="view-ticket-description"> {{ ticket.description  }} </p>
+        {% if ticket.image %}
+        <img class="avatar" src={{ ticket.image.url }}>
+        {% endif %}
+</div>

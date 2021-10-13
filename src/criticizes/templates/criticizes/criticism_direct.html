@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Créer une critique</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="criticism-container">
+        <h1 id="title-page-criticism">Créer une critique</h1>
+
+    <section class="ticket-body">
+        <form method="POST" id="ticket-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ ticket_form.as_p }}
+
+
+        </form>
+        <div>
+            <input id='view-answer-button' type="submit" form="ticket-form" value="Envoyer">
+        </div>
+    </section>
+
+        <section class="view-answer">
+            <h1>Saisie de votre critique : </h1>
+            <div class="view-answer-display">
+                <form method="POST" id="view-answer-form" enctype="multipart/form-data">
+        <!--        <form method="POST">-->
+                {% csrf_token %}
+                {{ review_form.as_p }}
+
+                </form>
+                <div>
+                  <input id='view-answer-button' type="submit" form="view-answer-form" value="Envoyer">
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

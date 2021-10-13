@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load criticizes_extras %}
 
 {% block title %}
     <title>Flux</title>
@@ -12,7 +13,7 @@
               <button>Demander une citique</button>
             </a>
 
-            <a href="">
+            <a href="{% url 'criticizes:criticism_direct' %}">
               <button>Créer une citique</button>
             </a>
 
@@ -20,17 +21,12 @@
 
         <section class="bodyFlux">
             <h1>Liste des tickets</h1>
-            {% for ticket in tickets %}
-            <div id="fluxTitleTicket"
-            <h2>{{ ticket.title }}</h2>
-            <h5> Publié par  <i> {{ ticket.user.username }} </i> {{ticket.time_created|date:'j F Y' }} </h5>
-            {{ ticket.pk  }}
-            {{ ticket.description  }}
-            {% if ticket.image %}
-            <img class="avatar" src={{ ticket.image.url }}>
+            {% for instance in tickets_and_reviews %}
+                {% if instance|model_type == 'Ticket' %}
+                    {% include 'criticizes/partials/ticket_snippet.html' with ticket=instance %}
+                {% elif instance|model_type == 'Review' %}
 
-            {% endif %}
-
+                {% endif %}
             {% endfor %}
         </section>
 
@@ -39,3 +35,19 @@
 
 
 {% endblock %}
+
+<!--        <section class="bodyFlux">-->
+<!--            <h1>Liste des tickets</h1>-->
+<!--            {% for ticket in tickets %}-->
+<!--            <div id="fluxTitleTicket"-->
+<!--            <h2>{{ ticket.title }}</h2>-->
+<!--            <h5> Publié par  <i> {{ ticket.user.username }} </i> {{ticket.time_created|date:'j F Y' }} </h5>-->
+<!--            {{ ticket.pk  }}-->
+<!--            {{ ticket.description  }}-->
+<!--            {% if ticket.image %}-->
+<!--            <img class="avatar" src={{ ticket.image.url }}>-->
+
+<!--            {% endif %}-->
+
+<!--            {% endfor %}-->
+<!--        </section>-->

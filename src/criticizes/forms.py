@@ -84,20 +84,6 @@ class UserFollowsForm(forms.Form):
             followed = User.objects.get(username=data)
         except User.DoesNotExist:
             raise forms.ValidationError("L'utilisateur est introuvable.")
-        except UserFollows.IntegrityError:
-            raise forms.ValidationError("L'utilisateur est déjà suivi.")
 
-    #     if password != confirmation_password:
-    #     raise forms.ValidationError("Le mot de passe et sa confirmation doivent être identiques.")
-    # return password, confirmation_password
-        # #Check date is not in past.
-        # if data < datetime.date.today():
-        #     raise ValidationError(_('Invalid date - renewal in past'))
-        #
-        # #Check date is in range librarian allowed to change (+4 weeks).
-        # if data > datetime.date.today() + datetime.timedelta(weeks=4):
-        #     raise ValidationError(_('Nom invalide - Utilisateur non trouvé'))
-        #       -> au lieu de raise, voir get_object_or_404 video 74 TH
-        # # Remember to always return the cleaned data.
         return data
 
