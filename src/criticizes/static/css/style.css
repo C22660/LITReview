@@ -116,9 +116,21 @@ footer
 }
 
 /*----- Page Flux -----*/
-bodyFlux {
+.bodyFlux {
+    width: 100%;
     display: flex;
-    align_items: column;
+    flex-direction: column;
+}
+
+
+/* .bodyFluxElements {
+    background-color: yellow;
+} */
+
+
+
+#command-pages {
+    text-align: center;
 }
 
 /*----- Page criticism -----*/
@@ -146,6 +158,8 @@ bodyFlux {
 .view-ticket-display {
     border: solid;
     width: 50%;
+    /*min-width: 50%;
+    max-width: 50%;*/
     margin-left: auto;
     margin-right: auto;
 }

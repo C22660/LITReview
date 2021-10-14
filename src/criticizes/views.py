@@ -1,4 +1,6 @@
 from itertools import chain
+
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models import Value, CharField
@@ -40,7 +42,7 @@ def ticket_view(request):
 
 # ------ Modification du ticket, page ticket_update.html ------
 @login_required
-def update_ticket_view(request, ticket_id=16):
+def update_ticket_view(request, ticket_id=42):
     """
     Permet la modification d'un ticket
     """
@@ -54,10 +56,12 @@ def update_ticket_view(request, ticket_id=16):
             print(UploadedFile.name)
             ticket_needing_update.title = new_datas.get("title")
             ticket_needing_update.description = new_datas.get("description")
-            # ticket_needing_update.image = new_datas.get("image")
+            ticket_needing_update.image = new_datas.get("image")
             # ticket_needing_update.image = request.FILES("image")
             ticket_needing_update.user = request.user
             ticket_needing_update.save()
+
+            return HttpResponseRedirect(reverse('criticizes:flux'))
     else:
         form = TicketForm(initial={"title": ticket_needing_update.title,
                                    "description": ticket_needing_update.description,
@@ -71,7 +75,7 @@ def update_ticket_view(request, ticket_id=16):
 
 # ------ Création de la review(en réponse à un ticket), page criticism.html ------
 @login_required
-def review_view(request, ticket_id=14):
+def review_view(request, ticket_id=33):
     """
     Permet la création d'une critique en réponse au ticket affiché
     """
@@ -83,11 +87,13 @@ def review_view(request, ticket_id=14):
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
+            # print(form.cleaned_data)
             review = form.save(commit=False)
             review.ticket = ticket_needing_answer
             review.user = request.user
             review.save()
+
+            return HttpResponseRedirect(reverse('criticizes:flux'))
     else:
         form = ReviewForm()
 
@@ -122,6 +128,8 @@ def update_review_view(request, review_id=1):
             review_needing_update.rating = new_datas.get("rating")
             review_needing_update.body = new_datas.get("body")
             review_needing_update.save()
+
+            return HttpResponseRedirect(reverse('criticizes:flux'))
     else:
         form = ReviewForm(initial={"headline": review_needing_update.headline,
                                    "rating": review_needing_update.rating,
@@ -148,28 +156,40 @@ def review_direct_view(request):
     # Affiche le formulaire de création du ticket
     if request.method == "POST":
         ticket_form = TicketForm(request.POST, request.FILES)
-        if ticket_form.is_valid():
+        review_form = ReviewForm(request.POST)
+        if ticket_form.is_valid() and review_form.is_valid():
+            ticket_datas = ticket_form.cleaned_data
+            print(ticket_datas)
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
             ticket.save()
+            ticket_recorded = Ticket.objects.last()
+            print(ticket_recorded)
+            print(review_form.cleaned_data)
+            review = review_form.save(commit=False)
+            review.ticket = ticket_recorded
+            review.user = request.user
+            review.save()
+
             return HttpResponseRedirect(reverse('criticizes:flux'))
 
     else:
         ticket_form = TicketForm()
-
-
-    # Affiche le formulaire de réponse (notation)
-    # Solution selon TH Udemy
-    if request.method == "POST":
-        review_form = ReviewForm(request.POST)
-        if review_form.is_valid():
-            print(review_form.cleaned_data)
-            review = review_form.save(commit=False)
-            review.ticket = ticket_needing_answer
-            review.user = request.user
-            review.save()
-    else:
         review_form = ReviewForm()
+
+
+    # # Affiche le formulaire de réponse (notation)
+    # # Solution selon TH Udemy
+    # if request.method == "POST":
+    #     review_form = ReviewForm(request.POST)
+    #     if review_form.is_valid():
+    #         print(review_form.cleaned_data)
+    #         # review = review_form.save(commit=False)
+    #         # review.ticket = ticket_needing_answer
+    #         # review.user = request.user
+    #         # review.save()
+    # else:
+    #     review_form = ReviewForm()
 
     context = {
         "ticket_form": ticket_form,
@@ -255,24 +275,50 @@ def flux_ticket_review(request):
     tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda instance: instance.time_created,
                                  reverse=True)
 
+    paginator = Paginator(tickets_and_reviews, 6)
+    page = request.GET.get('page')
+
+    page_obj = paginator.get_page(page)
+
     template = 'criticizes/flux.html'
-    context = {'tickets_and_reviews': tickets_and_reviews}
-    return render(request, template, context)
+    context = {'page_obj': page_obj}
+    return render(request, template, context=context)
+    # template = 'criticizes/flux.html'
+    # context = {'tickets_and_reviews': tickets_and_reviews}
+    # return render(request, template, context=context)
 
 # ------ page posts.html ------
-@method_decorator(login_required, name='dispatch')
-class ListPosts(ListView):
-    """
-    N'affiche que les posts réalisés par l'utilisateur connecté
-    """
-    model = Ticket
-    context_object_name = "posts"
-    template_name = 'criticizes/posts.html'
+# @method_decorator(login_required, name='dispatch')
+# class ListPosts(ListView):
+#     """
+#     N'affiche que les posts réalisés par l'utilisateur connecté
+#     """
+#     model = Ticket
+#     context_object_name = "posts"
+#     template_name = 'criticizes/posts.html'
+#
+#     def get_queryset(self):
+#         # on récupère les données retrournées par le queryset
+#         queryset = super().get_queryset()
+#
+#         return queryset.filter(user=self.request.user)
+@login_required
+def posts_ticket_review(request):
+    tickets = Ticket.objects.filter(user=request.user)
+    reviews = Review.objects.filter(user=request.user)
 
-    def get_queryset(self):
-        # on récupère les données retrournées par le queryset
-        queryset = super().get_queryset()
+    tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda instance: instance.time_created,
+                                 reverse=True)
 
-        return queryset.filter(user=self.request.user)
+    paginator = Paginator(tickets_and_reviews, 6)
+    page = request.GET.get('page')
 
+    page_obj = paginator.get_page(page)
+
+    template = 'criticizes/flux.html'
+    context = {'page_obj': page_obj}
+    return render(request, template, context=context)
+    # template = 'criticizes/flux.html'
+    # context = {'tickets_and_reviews': tickets_and_reviews}
+    # return render(request, template, context=context)
 

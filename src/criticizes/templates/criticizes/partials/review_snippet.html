@@ -1,0 +1,10 @@
+{% load criticizes_extras %}
+
+<div class="view-ticket-display">
+    <p id="date">{{review.time_created|date:'f, j F Y' }} </p>
+    <h5> {{ review.user.username }} a publié une critique</h5>
+    <h2>{{ review.headline }}</h2>
+        {{ review.rating }}
+        {{ review.pk  }}
+    <p id="view-ticket-description"> {{ review.body  }} </p>
+</div>

@@ -33,7 +33,8 @@ class Ticket(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.resize_image()
+        if self.image:
+            self.resize_image()
 
     # # après validation d'un ticket, réoriente la page vers la page flux
     # def get_absolute_url(self):

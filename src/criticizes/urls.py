@@ -1,7 +1,8 @@
 from django.urls import path
 
 from criticizes.views import ticket_view, review_view, user_follow_view, flux_ticket_review
-from criticizes.views import delete_subscription, ListPosts, update_review_view, update_ticket_view, review_direct_view
+from criticizes.views import delete_subscription, posts_ticket_review, update_review_view,\
+    update_ticket_view, review_direct_view
 # from criticizes.views import TicketView
 
 # chemin des urls
@@ -16,7 +17,7 @@ urlpatterns = [
     path('followers/', user_follow_view, name="user_follow"),
     path('flux/', flux_ticket_review, name="flux"),
     path('delete/', delete_subscription, name="delete-subscription"),
-    path('posts/', ListPosts.as_view(), name="posts"),
+    path('posts/', posts_ticket_review, name="posts"),
 ]
 
 # path('followers/', list_followers, name="list_followers"),
