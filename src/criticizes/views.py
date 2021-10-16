@@ -269,9 +269,6 @@ def flux_ticket_review(request):
     tickets = Ticket.objects.all()
     reviews = Review.objects.all()
 
-    # tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
-    # reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
-
     tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda instance: instance.time_created,
                                  reverse=True)
 

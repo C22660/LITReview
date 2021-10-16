@@ -1,10 +1,53 @@
 {% load criticizes_extras %}
 
+
 <div class="view-ticket-display">
     <p id="date">{{review.time_created|date:'f, j F Y' }} </p>
-    <h5> {{ review.user.username }} a publié une critique</h5>
-    <h2>{{ review.headline }}</h2>
-        {{ review.rating }}
+    <h5> {% get_poster_display review.user %} publié une critique</h5>
+            {{ review.rating }}
         {{ review.pk  }}
+    <div class="title-and-rating-container">
+<!--        pour ajouter un espace en fin de ligne &#160-->
+        <h2>{{ review.headline }}   -&#160</h2>
+        <div>
+            {% if review.rating == 0 %}
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+            {% elif review.rating == 1 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+            {% elif review.rating == 2 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+            {% elif review.rating == 3 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+            {% elif review.rating == 4 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+            {% elif review.rating == 5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+            {% endif %}
+        </div>
+    </div>
     <p id="view-ticket-description"> {{ review.body  }} </p>
 </div>

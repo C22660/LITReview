@@ -1,7 +1,8 @@
 {% load criticizes_extras %}
+
 <div class="view-ticket-display">
     <p id="date">{{ticket.time_created|date:'f, j F Y' }} </p>
-    <h5> {{ ticket.user.username }} a demandé une critique</h5>
+    <h5> {% get_poster_display ticket.user %} publié un ticket</h5>
     <h2>{{ ticket.title }}</h2>
         {{ ticket.pk  }}
     <p id="view-ticket-description"> {{ ticket.description  }} </p>

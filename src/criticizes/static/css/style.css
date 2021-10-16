@@ -135,7 +135,7 @@ footer
 
 /*----- Page criticism -----*/
 .criticism-container {
-    display:flex
+    display:flex;
     flex-direction: column;
 }
 
@@ -162,6 +162,11 @@ footer
     max-width: 50%;*/
     margin-left: auto;
     margin-right: auto;
+}
+
+.title-and-rating-container {
+    display: flex;
+    align-items: flex-end;
 }
 
 .view-ticket-display > h5, h2 {
@@ -236,3 +241,7 @@ label {
     background-color: yellow;
 }
 
+/*----- Rating, colors of stars -----*/
+.checked {
+  color: orange;
+}
