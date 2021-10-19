@@ -80,8 +80,9 @@ def review_view(request, ticket_id=33):
     Permet la création d'une critique en réponse au ticket affiché
     """
     # Affiche le ticket concerné
-    ticket_needing_answer = get_object_or_404(Ticket, id=ticket_id)
-    print(ticket_needing_answer)
+    pk_in_database = request.POST.get('ticket_pk')
+    ticket_needing_answer = get_object_or_404(Ticket, id=pk_in_database)
+    # print(ticket_needing_answer)
     # Affiche le formulaire de réponse (notation)
     # Solution selon TH Udemy
     if request.method == "POST":
@@ -268,6 +269,9 @@ def delete_subscription(request):
 def flux_ticket_review(request):
     tickets = Ticket.objects.all()
     reviews = Review.objects.all()
+    tickets_followed = []
+    for ticket in reviews:
+        tickets_followed.append(ticket.ticket.pk)
 
     tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda instance: instance.time_created,
                                  reverse=True)
@@ -278,7 +282,8 @@ def flux_ticket_review(request):
     page_obj = paginator.get_page(page)
 
     template = 'criticizes/flux.html'
-    context = {'page_obj': page_obj}
+    context = {'page_obj': page_obj, 'tickets_followed': tickets_followed}
+
     return render(request, template, context=context)
     # template = 'criticizes/flux.html'
     # context = {'tickets_and_reviews': tickets_and_reviews}

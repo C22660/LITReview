@@ -50,4 +50,14 @@
         </div>
     </div>
     <p id="view-ticket-description"> {{ review.body  }} </p>
+    <div class="ticket-inside-review">
+<!--        <p id="date">{{instance.ticket.time_created|date:'f, j F Y' }} </p>-->
+        <h5>  Ticket de {{ instance.ticket.user }}</h5>
+        <h2>{{ instance.ticket.title }}</h2>
+            {{ instance.ticket.pk  }}
+        <p id="view-ticket-description"> {{ instance.ticket.description  }} </p>
+            {% if instance.ticket.image %}
+            <img class="avatar" src={{ instance.ticket.image.url }}>
+            {% endif %}
+    </div>
 </div>

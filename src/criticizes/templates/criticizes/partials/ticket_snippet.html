@@ -9,4 +9,12 @@
         {% if ticket.image %}
         <img class="avatar" src={{ ticket.image.url }}>
         {% endif %}
+    <div class="button-create-review">
+        <form action="{% url 'criticizes:criticism' %}" method="POST">
+         {% csrf_token %}
+        <input type="hidden" name="ticket_pk" value="{{ ticket.pk }}">
+        {% if  ticket.pk not in tickets_followed %}
+        <button type="submit">Créer une critique</button>
+        {% endif %}
+    </div>
 </div>
