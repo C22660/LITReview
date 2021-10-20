@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Supprimer une critique</title>
+{% endblock %}
+
+{% block content %}
+    <div class=confirmation">
+        <form action="{% url 'criticizes:delete_review' %}" method="POST">
+            {% csrf_token %}
+            <p>Êtes-vous sûr de vouloir supprimer {{ review.title }}</p>
+
+            <input type="hidden" name="review_pk" value="{{ review.pk }}" >
+            <button  class="btn-delete" type="submit">Oui, supprimer</button>
+
+        </form>
+    </div>
+
+{% endblock %}
+

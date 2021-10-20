@@ -60,4 +60,18 @@
             <img class="avatar" src={{ instance.ticket.image.url }}>
             {% endif %}
     </div>
+        <div class="button-create-review">
+            {% if review.user == request.user %}
+                <form action="{% url 'criticizes:criticism_update' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="review_pk" value="{{ review.pk }}">
+                <button type="submit" >Modifier</button>
+                </form>
+                <form action="{% url 'criticizes:confirmation_delete_review' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="review_pk" value="{{ review.pk }}">
+                <button type="submit" >Supprimer</button>
+                </form>
+            {% endif %}
+        </div>
 </div>

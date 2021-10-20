@@ -7,6 +7,7 @@ from django.db.models import Value, CharField
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.generic import ListView, UpdateView
 from django.utils.decorators import method_decorator
@@ -42,18 +43,19 @@ def ticket_view(request):
 
 # ------ Modification du ticket, page ticket_update.html ------
 @login_required
-def update_ticket_view(request, ticket_id=42):
+def update_ticket_view(request):
     """
     Permet la modification d'un ticket
     """
-    ticket_needing_update = get_object_or_404(Ticket, id=ticket_id)
-
+    pk_in_database = request.POST.get('ticket_id')
+    print(pk_in_database)
+    ticket_needing_update = get_object_or_404(Ticket, id=ticket_pk)
+    print(ticket_needing_update.description)
     if request.method == "POST":
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
             new_datas = form.cleaned_data
             form.save(commit=False)
-            print(UploadedFile.name)
             ticket_needing_update.title = new_datas.get("title")
             ticket_needing_update.description = new_datas.get("description")
             ticket_needing_update.image = new_datas.get("image")
@@ -73,9 +75,37 @@ def update_ticket_view(request, ticket_id=42):
 
     return render(request, "criticizes/tickets_update.html", context)
 
+# ------ Suppression d'un ticket, page ticket_confirm_delete.html ------
+def confirmation_delete_ticket(request):
+    """
+    Affiche un message de confirmation de suppression du ticket
+    """
+    pk_in_database = request.POST.get('ticket_pk')
+
+    # Recherche de la ligne correspondante à la PK dans la BD
+    ticket_for_deletion = get_object_or_404(Ticket, id=pk_in_database)
+
+    return render(request, "criticizes/ticket_confirm_delete.html", {"ticket": ticket_for_deletion})
+
+
+def delete_ticket(request):
+    """
+    Supprime le ticket dans le table Ticket par la suppression de la PK de l'enregistrement
+    """
+    pk_in_database = request.POST.get('ticket_pk')
+    print(pk_in_database)
+
+    # Recherche de la ligne correspondante à la PK dans la BD
+    ticket_for_deletion = get_object_or_404(Ticket, id=pk_in_database)
+    if request.method == "POST":
+        ticket_for_deletion.delete()
+
+    return HttpResponseRedirect(reverse('criticizes:flux'))
+
+
 # ------ Création de la review(en réponse à un ticket), page criticism.html ------
 @login_required
-def review_view(request, ticket_id=33):
+def review_view(request):
     """
     Permet la création d'une critique en réponse au ticket affiché
     """
@@ -107,12 +137,14 @@ def review_view(request, ticket_id=33):
 
 # ------ Modification de la review, page criticism_update.html ------
 @login_required
-def update_review_view(request, review_id=1):
+def update_review_view(request, review_id=6):
     """
     Permet la modification d'une critique
     """
+    pk_in_database = request.POST.get('review_pk')
+    print(pk_in_database)
     # Récupère la review concernée
-    review_needing_update = get_object_or_404(Review, id=review_id)
+    review_needing_update = get_object_or_404(Review, id=pk_in_database)
     # Récupère la clé du ticket associé
     ticket_linked = review_needing_update.ticket.pk
     # Récupère le ticket concerné pour affichage
@@ -199,6 +231,33 @@ def review_direct_view(request):
 
     return render(request, "criticizes/criticism_direct.html", context)
 
+
+# ------ Suppression d'une critique, page review_confirm_delete.html ------
+def confirmation_delete_review(request):
+    """
+    Affiche un message de confirmation de suppression de la critique
+    """
+    pk_in_database = request.POST.get('review_pk')
+
+    # Recherche de la ligne correspondante à la PK dans la BD
+    review_for_deletion = get_object_or_404(Review, id=pk_in_database)
+
+    return render(request, "criticizes/criticism_confirm_delete.html", {"review": review_for_deletion})
+
+
+def delete_review(request):
+    """
+    Supprime la critique dans le table Review par la suppression de la PK de l'enregistrement
+    """
+    pk_in_database = request.POST.get('review_pk')
+    print(pk_in_database)
+
+    # Recherche de la ligne correspondante à la PK dans la BD
+    review_for_deletion = get_object_or_404(Review, id=pk_in_database)
+    if request.method == "POST":
+        review_for_deletion.delete()
+
+    return HttpResponseRedirect(reverse('criticizes:flux'))
 
 # ------ Suivi d'un utilisateur, page followers.html ------
 @login_required

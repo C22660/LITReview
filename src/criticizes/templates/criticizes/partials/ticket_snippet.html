@@ -10,11 +10,25 @@
         <img class="avatar" src={{ ticket.image.url }}>
         {% endif %}
     <div class="button-create-review">
-        <form action="{% url 'criticizes:criticism' %}" method="POST">
-         {% csrf_token %}
-        <input type="hidden" name="ticket_pk" value="{{ ticket.pk }}">
-        {% if  ticket.pk not in tickets_followed %}
-        <button type="submit">Créer une critique</button>
+        {% if ticket.user == request.user %}
+            <form action="{% url 'criticizes:ticket_update' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="ticket_pk" value="{{ ticket.pk }}">
+            <button type="submit">Modifier</button>
+            </form>
+            <form action="{% url 'criticizes:confirmation_delete_ticket' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="ticket_pk" value="{{ ticket.pk }}">
+            <button type="submit">Supprimer</button>
+            </form>
+        {% else %}
+            <form action="{% url 'criticizes:criticism' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="ticket_pk" value="{{ ticket.pk }}">
+            {% if  ticket.pk not in tickets_followed %}
+            <button type="submit">Créer une critique</button>
+            </form>
+            {% endif %}
         {% endif %}
     </div>
 </div>
