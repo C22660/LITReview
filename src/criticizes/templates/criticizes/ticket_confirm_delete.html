@@ -5,16 +5,17 @@
 {% endblock %}
 
 {% block content %}
-    <div class=confirmation">
+<div class="bodyconfirmation">
+    <div class="confirmation">
         <form action="{% url 'criticizes:delete_ticket' %}" method="POST">
             {% csrf_token %}
-            <p>Êtes-vous sûr de vouloir supprimer {{ ticket.title }}</p>
+            <p>Êtes-vous sûr de vouloir supprimer le ticket : {{ ticket.title }}</p>
 
             <input type="hidden" name="ticket_pk" value="{{ ticket.pk }}" >
             <button  class="btn-delete" type="submit">Oui, supprimer</button>
 
         </form>
     </div>
-
+</div>
 {% endblock %}
 

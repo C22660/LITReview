@@ -53,7 +53,7 @@ class Review(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.ticket
+        return self.headline
 
     # si ajout du slug surcharge de la fonction save (video 141, minute 11)
 

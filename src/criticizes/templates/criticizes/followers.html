@@ -9,35 +9,39 @@
 <div class="bodyfollowers">
     <section class="suivis">
         <h1>Suivre d'autres utilisateurs</h1>
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        <div class="body-suivis">
+            <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
 
 
-        <input type="submit" value="Envoyer">
-
+            <input id="confirm-follow" type="submit" value="Envoyer">
+        </div>
     </section>
 
 
     <section class="abonnements">
         <h1>Abonnements</h1>
         {% for follow in followed_by_user %}
-        <table>
+        <table class="tab-abonnement">
             <tr>
               <td>{{ follow.followed_user.username }}</td>
-              <td> <form action="{% url 'criticizes:delete-subscription' %}" method="POST">
+              <td> <form id="abo-form" action="{% url 'criticizes:delete-subscription' %}" method="POST">
                   {% csrf_token %}
-                  <input type="hidden" name="primary_key_of_subscription" value="{{ follow.pk }}">
-                  <button type="submit">Désabonner</button>
+                    <input type="hidden" name="primary_key_of_subscription" value="{{ follow.pk }}">
                   </form>
               </td>
+                <td id="desabonnes">
+
+                  <button form="abo-form"  type="submit">Désabonner</button>
+                </td>
             </tr>
 
               </td>

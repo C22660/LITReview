@@ -5,16 +5,19 @@
 {% endblock %}
 
 {% block content %}
-    <div class=confirmation">
+<div class="bodyconfirmation">
+    <div class="confirmation">
         <form action="{% url 'criticizes:delete_review' %}" method="POST">
             {% csrf_token %}
-            <p>Êtes-vous sûr de vouloir supprimer {{ review.title }}</p>
+            <p>Êtes-vous sûr de vouloir supprimer la critique :  {{ review }}</p>
 
             <input type="hidden" name="review_pk" value="{{ review.pk }}" >
-            <button  class="btn-delete" type="submit">Oui, supprimer</button>
+            <button  class="btn btn-delete" type="submit">Oui, supprimer</button>
+            <a href="{% url 'criticizes:flux'%}">
+                <button class="btn btn-cancel">Non, retour</button></a>
 
         </form>
     </div>
-
+</div>
 {% endblock %}
 

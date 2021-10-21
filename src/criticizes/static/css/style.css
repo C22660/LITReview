@@ -97,6 +97,7 @@ footer
 /*----- Connexion page -----*/
 
 .connexionbody {
+    background-color: yellow;
     flex_direction: column;
     width: 100%;
     height: 5%;
@@ -111,8 +112,43 @@ footer
 
 /*----- Page followers -----*/
 .bodyfollowers {
-    align_items: column;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
+
+.bodyfollowers h1 {
+    text-align: center;
+}
+.suivis, .abonnes, .abonnements {
+    border: solid;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.body-suivis {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+
+#confirm-follow {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.abonnements > table {
+  border-collapse: separate;
+}
+
+
+#desabonnes {
+    padding: 0 0 0 2em;
+}
+
+
 
 /*----- Page Flux -----*/
 .bodyFlux {
@@ -142,16 +178,24 @@ footer
     margin-right: auto;
 }
 
+/*----- Pages criticism_confirm_delete &  ticket_confirm_delete-----*/
+.bodyconfirmation {
+    /*background-color: yellow;*/
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .confirmation {
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-    display: flex;
-    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
-.btn-delete {
-    background-color: indianred;
+.btn {
     padding: 0.5rem;
     border: none;
     font-weight: 600;
@@ -164,8 +208,12 @@ footer
     margin-bottom: 15px;
 }
 
-.test {
-    background-color: red;
+.btn-delete {
+    background-color: indianred;
+}
+
+.btn-cancel {
+    background-color: green;
 }
 
 #command-pages {
@@ -197,8 +245,6 @@ footer
 .view-ticket-display {
     border: solid;
     width: 50%;
-    /*min-width: 50%;
-    max-width: 50%;*/
     margin-left: auto;
     margin-right: auto;
 }

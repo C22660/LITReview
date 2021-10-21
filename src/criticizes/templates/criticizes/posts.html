@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load criticizes_extras %}
 
 {% block title %}
     <title>posts</title>
@@ -10,19 +11,7 @@
 
 
         <section class="bodyPosts">
-            <h1>Vos posts</h1>
-<!--            {% for post in posts %}-->
-<!--            <div id="fluxTitlePost"-->
-<!--            <h2>{{ Post.title }}</h2>-->
-<!--            <h5> Publié par  <i> {{ post.user.username }} </i> {{post.time_created|date:'j F Y' }} </h5>-->
-<!--            {{ post.pk  }}-->
-<!--            {{ psot.description  }}-->
-<!--            {% if post.image %}-->
-<!--            <img class="avatar" src={{ post.image.url }}>-->
 
-<!--            {% endif %}-->
-
-<!--            {% endfor %}-->
             {% for instance in page_obj %}
                 {% if instance|model_type == 'Ticket' %}
                     {% include 'criticizes/partials/ticket_snippet.html' with ticket=instance %}

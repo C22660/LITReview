@@ -43,14 +43,13 @@ def ticket_view(request):
 
 # ------ Modification du ticket, page ticket_update.html ------
 @login_required
-def update_ticket_view(request):
+def update_ticket_view(request, ticket_pk):
     """
     Permet la modification d'un ticket
     """
-    pk_in_database = request.POST.get('ticket_id')
-    print(pk_in_database)
-    ticket_needing_update = get_object_or_404(Ticket, id=ticket_pk)
-    print(ticket_needing_update.description)
+    if ticket_pk != "":
+        ticket_needing_update = get_object_or_404(Ticket, id=ticket_pk)
+
     if request.method == "POST":
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
@@ -76,14 +75,13 @@ def update_ticket_view(request):
     return render(request, "criticizes/tickets_update.html", context)
 
 # ------ Suppression d'un ticket, page ticket_confirm_delete.html ------
-def confirmation_delete_ticket(request):
+def confirmation_delete_ticket(request, ticket_pk=""):
     """
     Affiche un message de confirmation de suppression du ticket
     """
-    pk_in_database = request.POST.get('ticket_pk')
 
     # Recherche de la ligne correspondante à la PK dans la BD
-    ticket_for_deletion = get_object_or_404(Ticket, id=pk_in_database)
+    ticket_for_deletion = get_object_or_404(Ticket, id=ticket_pk)
 
     return render(request, "criticizes/ticket_confirm_delete.html", {"ticket": ticket_for_deletion})
 
@@ -105,13 +103,11 @@ def delete_ticket(request):
 
 # ------ Création de la review(en réponse à un ticket), page criticism.html ------
 @login_required
-def review_view(request):
+def review_view(request, ticket_pk=""):
     """
     Permet la création d'une critique en réponse au ticket affiché
     """
-    # Affiche le ticket concerné
-    pk_in_database = request.POST.get('ticket_pk')
-    ticket_needing_answer = get_object_or_404(Ticket, id=pk_in_database)
+    ticket_needing_answer = get_object_or_404(Ticket, id=ticket_pk)
     # print(ticket_needing_answer)
     # Affiche le formulaire de réponse (notation)
     # Solution selon TH Udemy
@@ -137,18 +133,18 @@ def review_view(request):
 
 # ------ Modification de la review, page criticism_update.html ------
 @login_required
-def update_review_view(request, review_id=6):
+def update_review_view(request, review_pk=""):
     """
     Permet la modification d'une critique
     """
-    pk_in_database = request.POST.get('review_pk')
-    print(pk_in_database)
+    if review_pk != "":
     # Récupère la review concernée
-    review_needing_update = get_object_or_404(Review, id=pk_in_database)
-    # Récupère la clé du ticket associé
-    ticket_linked = review_needing_update.ticket.pk
-    # Récupère le ticket concerné pour affichage
-    ticket_needing_answer = get_object_or_404(Ticket, id=ticket_linked)
+        review_needing_update = get_object_or_404(Review, id=review_pk)
+        # Récupère la clé du ticket associé
+        ticket_linked = review_needing_update.ticket.pk
+        # Récupère le ticket concerné pour affichage
+        ticket_needing_answer = get_object_or_404(Ticket, id=ticket_linked)
+
 
     # Affiche le formulaire de réponse (notation)
     # Solution selon TH Udemy
@@ -210,20 +206,6 @@ def review_direct_view(request):
         ticket_form = TicketForm()
         review_form = ReviewForm()
 
-
-    # # Affiche le formulaire de réponse (notation)
-    # # Solution selon TH Udemy
-    # if request.method == "POST":
-    #     review_form = ReviewForm(request.POST)
-    #     if review_form.is_valid():
-    #         print(review_form.cleaned_data)
-    #         # review = review_form.save(commit=False)
-    #         # review.ticket = ticket_needing_answer
-    #         # review.user = request.user
-    #         # review.save()
-    # else:
-    #     review_form = ReviewForm()
-
     context = {
         "ticket_form": ticket_form,
         "review_form": review_form,
@@ -233,16 +215,21 @@ def review_direct_view(request):
 
 
 # ------ Suppression d'une critique, page review_confirm_delete.html ------
-def confirmation_delete_review(request):
+def confirmation_delete_review(request, review_pk=""):
     """
     Affiche un message de confirmation de suppression de la critique
     """
-    pk_in_database = request.POST.get('review_pk')
+
+    # if cancel==cancel:
+    #     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
     # Recherche de la ligne correspondante à la PK dans la BD
-    review_for_deletion = get_object_or_404(Review, id=pk_in_database)
+    review_for_deletion = get_object_or_404(Review, id=review_pk)
+    print(review_for_deletion)
 
-    return render(request, "criticizes/criticism_confirm_delete.html", {"review": review_for_deletion})
+
+    return render(request, "criticizes/criticism_confirm_delete.html",
+                  {"review": review_for_deletion})
 
 
 def delete_review(request):
@@ -317,13 +304,6 @@ def delete_subscription(request):
 
 
 # ------ page flux.html ------
-# Class mais ici, juste avec les tickets
-# @method_decorator(login_required, name='dispatch')
-# class ListTickets(ListView):
-#     model = Ticket
-#     context_object_name = "tickets"
-#     template_name = 'criticizes/flux.html'
-
 @login_required
 def flux_ticket_review(request):
     tickets = Ticket.objects.all()
@@ -350,19 +330,6 @@ def flux_ticket_review(request):
 
 # ------ page posts.html ------
 # @method_decorator(login_required, name='dispatch')
-# class ListPosts(ListView):
-#     """
-#     N'affiche que les posts réalisés par l'utilisateur connecté
-#     """
-#     model = Ticket
-#     context_object_name = "posts"
-#     template_name = 'criticizes/posts.html'
-#
-#     def get_queryset(self):
-#         # on récupère les données retrournées par le queryset
-#         queryset = super().get_queryset()
-#
-#         return queryset.filter(user=self.request.user)
 @login_required
 def posts_ticket_review(request):
     tickets = Ticket.objects.filter(user=request.user)
@@ -376,7 +343,7 @@ def posts_ticket_review(request):
 
     page_obj = paginator.get_page(page)
 
-    template = 'criticizes/flux.html'
+    template = 'criticizes/posts.html'
     context = {'page_obj': page_obj}
     return render(request, template, context=context)
     # template = 'criticizes/flux.html'

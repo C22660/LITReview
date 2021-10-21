@@ -11,24 +11,16 @@
         {% endif %}
     <div class="button-create-review">
         {% if ticket.user == request.user %}
-            <form action="{% url 'criticizes:ticket_update' %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="ticket_pk" value="{{ ticket.pk }}">
-            <button type="submit">Modifier</button>
-            </form>
-            <form action="{% url 'criticizes:confirmation_delete_ticket' %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="ticket_pk" value="{{ ticket.pk }}">
-            <button type="submit">Supprimer</button>
-            </form>
+            <a href="{% url 'criticizes:ticket_update' ticket_pk=ticket.pk %}">
+                <button>Modifier</button></a>
+            <a href="{% url 'criticizes:confirmation_delete_ticket' ticket_pk=ticket.pk %}">
+                <button>Supprimer</button></a>
         {% else %}
-            <form action="{% url 'criticizes:criticism' %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="ticket_pk" value="{{ ticket.pk }}">
             {% if  ticket.pk not in tickets_followed %}
-            <button type="submit">Créer une critique</button>
-            </form>
+                <a href="{% url 'criticizes:criticism' ticket_pk=ticket.pk %}">
+                    <button>Créer une critique</button></a>
             {% endif %}
         {% endif %}
+
     </div>
 </div>
