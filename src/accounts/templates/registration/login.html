@@ -10,7 +10,9 @@
     <div class="inscription">
         <p>Inscrivez-vous maintenant</p>
 <!--        <input type="button" onclick="window.location.pathname = 'LitReview/compte/nouveau';" value="S'inscrire"/>-->
-        <a href="{% url 'accounts:signup' %}"> <input type="button" value="S'inscrire"></a>
+        <div id="inscription-btn">
+            <a href="{% url 'accounts:signup' %}"> <input type="button" value="S'inscrire"></a>
+        </div>
     </div>
 
     <div class="connexion">

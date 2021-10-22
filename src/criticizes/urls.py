@@ -18,8 +18,7 @@ urlpatterns = [
     path('delete_ticket/', delete_ticket, name="delete_ticket"),
     path('confirmation_delete_review/<review_pk>', confirmation_delete_review,
                                         name="confirmation_delete_review"),
-    path('delete_review/', delete_review, name="delete_review"),
-
+    path('delete_review/<review_pk>', delete_review, name="delete_review"),
     path('criticism/<ticket_pk>', review_view, name="criticism"),
     path('criticism_update/', update_review_view, name="criticism_update"),
     path('criticism_update/<review_pk>', update_review_view, name="criticism_update"),

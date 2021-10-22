@@ -7,8 +7,7 @@
 
 {% block content %}
 
-    <div>
-
+    <div class="bodyFlux">>
 
         <section class="bodyPosts">
 
@@ -20,27 +19,27 @@
 
                 {% endif %}
             {% endfor %}
-                <div id="command-pages">
-        <span>
-            {% if page_obj.has_previous %}
-                <br>
-                <a href="?page=1">&laquo; première</a>
-                <a href="?page={{ page_obj.previous_page_number }}">précédente</a>
-            {% endif %}
+            <div id="command-pages">
+                <span>
+                    {% if page_obj.has_previous %}
+                        <br>
+                        <a href="?page=1">&laquo; première</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">précédente</a>
+                    {% endif %}
 
-            <span>
-                <br>
-                Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
-                <br>
-                <br>
-            </span>
+                    <span>
+                        <br>
+                        Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+                        <br>
+                        <br>
+                    </span>
 
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">suivante</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">dernière &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">suivante</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">dernière &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
         </section>
 
     </div>

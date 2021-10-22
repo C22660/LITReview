@@ -22,8 +22,8 @@ from LitReview import settings
 
 urlpatterns = [
     path('administration-application/', admin.site.urls),
-    path('LitReview/', include('criticizes.urls')),
-    path('LitReview/', include('accounts.urls')),
+    path('', include('criticizes.urls')),
+    path('', include('accounts.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(

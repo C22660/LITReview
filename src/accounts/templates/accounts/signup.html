@@ -6,21 +6,24 @@
 
 {% block content %}
 
-    <h1>Inscrivez-vous</h1>
+<div class="bodyFlux">
+    <div class="bodyinscription">
+        <h1>Inscrivez-vous</h1>
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
 
 
 
-        <input type="button" value="Retourner">
-        <input type="submit" value="S'inscrire">
-    </form>
-            {% if error %}
-        <h3 style="color: red;">
-            {{ error }}
-        </h3>
-        {% endif %}
-
+            <input type="button" value="Retourner">
+            <input type="submit" value="S'inscrire">
+        </form>
+                {% if error %}
+            <h3 style="color: red;">
+                {{ error }}
+            </h3>
+            {% endif %}
+    </div>
+</div>
 {% endblock %}

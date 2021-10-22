@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models import Value, CharField
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
@@ -17,6 +17,11 @@ from django.contrib import messages
 from criticizes.forms import TicketForm, ReviewForm, UserFollowsForm
 from criticizes.models import UserFollows, Ticket, Review
 
+
+
+# ----Création d'une vue accueil avec redirection sur connection -----
+# def home():
+#     return redirect()
 
 # ------ Création d'un ticket (demande de critique), page tickets.html ------
 @login_required
@@ -86,16 +91,16 @@ def confirmation_delete_ticket(request, ticket_pk=""):
     return render(request, "criticizes/ticket_confirm_delete.html", {"ticket": ticket_for_deletion})
 
 
-def delete_ticket(request):
+def delete_ticket(request, ticket_pk=""):
     """
     Supprime le ticket dans le table Ticket par la suppression de la PK de l'enregistrement
     """
-    pk_in_database = request.POST.get('ticket_pk')
-    print(pk_in_database)
+    if ticket_pk == "No":
+        return redirect('criticizes:flux')
 
+    else:
     # Recherche de la ligne correspondante à la PK dans la BD
-    ticket_for_deletion = get_object_or_404(Ticket, id=pk_in_database)
-    if request.method == "POST":
+        ticket_for_deletion = get_object_or_404(Ticket, id=ticket_pk)
         ticket_for_deletion.delete()
 
     return HttpResponseRedirect(reverse('criticizes:flux'))
@@ -188,13 +193,10 @@ def review_direct_view(request):
         review_form = ReviewForm(request.POST)
         if ticket_form.is_valid() and review_form.is_valid():
             ticket_datas = ticket_form.cleaned_data
-            print(ticket_datas)
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
             ticket.save()
             ticket_recorded = Ticket.objects.last()
-            print(ticket_recorded)
-            print(review_form.cleaned_data)
             review = review_form.save(commit=False)
             review.ticket = ticket_recorded
             review.user = request.user
@@ -220,28 +222,29 @@ def confirmation_delete_review(request, review_pk=""):
     Affiche un message de confirmation de suppression de la critique
     """
 
-    # if cancel==cancel:
-    #     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
     # Recherche de la ligne correspondante à la PK dans la BD
     review_for_deletion = get_object_or_404(Review, id=review_pk)
-    print(review_for_deletion)
 
 
     return render(request, "criticizes/criticism_confirm_delete.html",
                   {"review": review_for_deletion})
 
 
-def delete_review(request):
+def delete_review(request, review_pk=""):
     """
     Supprime la critique dans le table Review par la suppression de la PK de l'enregistrement
     """
-    pk_in_database = request.POST.get('review_pk')
-    print(pk_in_database)
 
-    # Recherche de la ligne correspondante à la PK dans la BD
-    review_for_deletion = get_object_or_404(Review, id=pk_in_database)
-    if request.method == "POST":
+    # # Recherche de la ligne correspondante à la PK dans la BD
+    if review_pk == "No":
+        return redirect('criticizes:flux')
+        # return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    #     print(review_pk)
+    #     next = request.META.get('HTTP_REFERER', None) or '/'
+    #     response = HttpResponseRedirect(next)
+    #     return response
+    else:
+        review_for_deletion = get_object_or_404(Review, id=review_pk)
         review_for_deletion.delete()
 
     return HttpResponseRedirect(reverse('criticizes:flux'))
@@ -319,6 +322,7 @@ def flux_ticket_review(request):
     page = request.GET.get('page')
 
     page_obj = paginator.get_page(page)
+
 
     template = 'criticizes/flux.html'
     context = {'page_obj': page_obj, 'tickets_followed': tickets_followed}
