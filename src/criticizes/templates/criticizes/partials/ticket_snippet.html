@@ -4,7 +4,6 @@
     <p id="date">{{ticket.time_created|date:'f, j F Y' }} </p>
     <h5> {% get_poster_display ticket.user %} publié un ticket</h5>
     <h2>{{ ticket.title }}</h2>
-        {{ ticket.pk  }}
     <p id="view-ticket-description"> {{ ticket.description  }} </p>
         {% if ticket.image %}
         <img class="avatar" src={{ ticket.image.url }}>

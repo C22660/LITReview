@@ -4,8 +4,6 @@
 <div class="view-ticket-display">
     <p id="date">{{review.time_created|date:'f, j F Y' }} </p>
     <h5> {% get_poster_display review.user %} publié une critique</h5>
-            {{ review.rating }}
-        {{ review.pk  }}
     <div class="title-and-rating-container">
 <!--        pour ajouter un espace en fin de ligne &#160-->
         <h2>{{ review.headline }}   -&#160</h2>
@@ -52,9 +50,8 @@
     <p id="view-ticket-description"> {{ review.body  }} </p>
     <div class="ticket-inside-review">
 <!--        <p id="date">{{instance.ticket.time_created|date:'f, j F Y' }} </p>-->
-        <h5>  Ticket de {{ instance.ticket.user }}</h5>
+        <h5> {% get_ticket_display instance.ticket.user %}</h5>
         <h2>{{ instance.ticket.title }}</h2>
-            {{ instance.ticket.pk  }}
         <p id="view-ticket-description"> {{ instance.ticket.description  }} </p>
             {% if instance.ticket.image %}
             <img class="avatar" src={{ instance.ticket.image.url }}>

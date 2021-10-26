@@ -12,6 +12,7 @@ from django.urls import reverse
 from django.views.generic import ListView, UpdateView
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.db.models import Q
 
 
 from criticizes.forms import TicketForm, ReviewForm, UserFollowsForm
@@ -62,8 +63,8 @@ def update_ticket_view(request, ticket_pk):
             form.save(commit=False)
             ticket_needing_update.title = new_datas.get("title")
             ticket_needing_update.description = new_datas.get("description")
-            ticket_needing_update.image = new_datas.get("image")
-            # ticket_needing_update.image = request.FILES("image")
+            if new_datas.get("image"):
+                ticket_needing_update.image = new_datas.get("image")
             ticket_needing_update.user = request.user
             ticket_needing_update.save()
 
@@ -309,8 +310,30 @@ def delete_subscription(request):
 # ------ page flux.html ------
 @login_required
 def flux_ticket_review(request):
-    tickets = Ticket.objects.all()
-    reviews = Review.objects.all()
+    # User connecté :
+    pk_connected_user = request.user.pk
+    # Utilisateurs suivis par le user connecté :
+    followed_by_user = request.user.following.all()
+    # Création d'une liste avec les PK des utilisateurs suivis
+    users_followed = []
+    for i in followed_by_user:
+        users_followed.append(i.followed_user.pk)
+
+    # Combinaison des deux filtres, tickets de User et de ceux des utilisateurs suivis
+    tickets = Ticket.objects.filter(Q(user=pk_connected_user) | Q(user__in=users_followed))
+    # J'isole les tickets de l'utilisateur connecté pour pouvoir les récupérer dans les critiques
+    # dans le cas où une personne non suivie par l'utilisateur y a répondu
+    tickets_from_user_connected = []
+    tickets_2 = Ticket.objects.filter(user=pk_connected_user)
+    for t in tickets_2:
+        tickets_from_user_connected.append(t.pk)
+    # Combinaisons des filtres dans les critiques
+    reviews = Review.objects.filter(Q(user=pk_connected_user) | Q(user__in=users_followed) |
+                                    Q(ticket__in=tickets_from_user_connected))
+
+    # création d'une liste des tickets ayant reçus une critique.
+    # cette liste est utilisée dans ticket_snippet.html pour n'afficher le bouton
+    # "créer une critique" que pour les tickets qui ne sont pas dedans
     tickets_followed = []
     for ticket in reviews:
         tickets_followed.append(ticket.ticket.pk)
@@ -328,12 +351,8 @@ def flux_ticket_review(request):
     context = {'page_obj': page_obj, 'tickets_followed': tickets_followed}
 
     return render(request, template, context=context)
-    # template = 'criticizes/flux.html'
-    # context = {'tickets_and_reviews': tickets_and_reviews}
-    # return render(request, template, context=context)
 
 # ------ page posts.html ------
-# @method_decorator(login_required, name='dispatch')
 @login_required
 def posts_ticket_review(request):
     tickets = Ticket.objects.filter(user=request.user)
@@ -350,7 +369,5 @@ def posts_ticket_review(request):
     template = 'criticizes/posts.html'
     context = {'page_obj': page_obj}
     return render(request, template, context=context)
-    # template = 'criticizes/flux.html'
-    # context = {'tickets_and_reviews': tickets_and_reviews}
-    # return render(request, template, context=context)
+
 
