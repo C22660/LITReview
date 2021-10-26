@@ -1,4 +1,4 @@
-# Application de gestion d'un tournoi d'échecs
+# Application web Django - Dépôt de demande/reponse de critique de livres
 
 Ce programme à pour objet de permettre à une communauté d'utilisateurs de consulter ou de solliciter une critique de livres à la demande.
 - Demande de critiques de livres ou d'articles en créant un ticket.
