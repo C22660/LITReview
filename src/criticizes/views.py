@@ -2,35 +2,21 @@ from itertools import chain
 
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from django.core.files.uploadedfile import UploadedFile
-from django.db.models import Value, CharField
-from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.template.loader import render_to_string
 from django.urls import reverse
-from django.views.generic import ListView, UpdateView
-from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.db.models import Q
-
 
 from criticizes.forms import TicketForm, ReviewForm, UserFollowsForm
 from criticizes.models import UserFollows, Ticket, Review
 
 
-
-# ----Création d'une vue accueil avec redirection sur connection -----
-# def home():
-#     return redirect()
-
 # ------ Création d'un ticket (demande de critique), page tickets.html ------
 @login_required
 def ticket_view(request):
-    """
-    Permet la création d'un ticket
-    """
-    # Solution selon TH Udemy
+    """Permet la création d'un ticket."""
     if request.method == "POST":
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
@@ -50,9 +36,7 @@ def ticket_view(request):
 # ------ Modification du ticket, page ticket_update.html ------
 @login_required
 def update_ticket_view(request, ticket_pk):
-    """
-    Permet la modification d'un ticket
-    """
+    """Permet la modification d'un ticket."""
     if ticket_pk != "":
         ticket_needing_update = get_object_or_404(Ticket, id=ticket_pk)
 
@@ -80,27 +64,27 @@ def update_ticket_view(request, ticket_pk):
 
     return render(request, "criticizes/tickets_update.html", context)
 
+
 # ------ Suppression d'un ticket, page ticket_confirm_delete.html ------
 def confirmation_delete_ticket(request, ticket_pk=""):
-    """
-    Affiche un message de confirmation de suppression du ticket
-    """
+    """Affiche un message de confirmation de suppression du ticket."""
 
     # Recherche de la ligne correspondante à la PK dans la BD
     ticket_for_deletion = get_object_or_404(Ticket, id=ticket_pk)
 
-    return render(request, "criticizes/ticket_confirm_delete.html", {"ticket": ticket_for_deletion})
+    return render(request, "criticizes/ticket_confirm_delete.html",
+                  {"ticket": ticket_for_deletion})
 
 
 def delete_ticket(request, ticket_pk=""):
-    """
-    Supprime le ticket dans le table Ticket par la suppression de la PK de l'enregistrement
-    """
+    """Supprime le ticket dans le table Ticket par la suppression de la PK de
+    l'enregistrement."""
+
     if ticket_pk == "No":
         return redirect('criticizes:flux')
 
     else:
-    # Recherche de la ligne correspondante à la PK dans la BD
+        # Recherche de la ligne correspondante à la PK dans la BD
         ticket_for_deletion = get_object_or_404(Ticket, id=ticket_pk)
         ticket_for_deletion.delete()
 
@@ -110,9 +94,7 @@ def delete_ticket(request, ticket_pk=""):
 # ------ Création de la review(en réponse à un ticket), page criticism.html ------
 @login_required
 def review_view(request, ticket_pk=""):
-    """
-    Permet la création d'une critique en réponse au ticket affiché
-    """
+    """Permet la création d'une critique en réponse au ticket affiché."""
     ticket_needing_answer = get_object_or_404(Ticket, id=ticket_pk)
     # print(ticket_needing_answer)
     # Affiche le formulaire de réponse (notation)
@@ -137,20 +119,18 @@ def review_view(request, ticket_pk=""):
 
     return render(request, "criticizes/criticism.html", context)
 
+
 # ------ Modification de la review, page criticism_update.html ------
 @login_required
 def update_review_view(request, review_pk=""):
-    """
-    Permet la modification d'une critique
-    """
+    """Permet la modification d'une critique."""
     if review_pk != "":
-    # Récupère la review concernée
+        # Récupère la review concernée
         review_needing_update = get_object_or_404(Review, id=review_pk)
         # Récupère la clé du ticket associé
         ticket_linked = review_needing_update.ticket.pk
         # Récupère le ticket concerné pour affichage
         ticket_needing_answer = get_object_or_404(Ticket, id=ticket_linked)
-
 
     # Affiche le formulaire de réponse (notation)
     # Solution selon TH Udemy
@@ -177,12 +157,12 @@ def update_review_view(request, review_pk=""):
 
     return render(request, "criticizes/criticism_update.html", context)
 
-# ------ Création d'une critique, review(sans réponse à un ticket), page criticism_direct.html ------
+
+# ------ Création d'une critique, review(sans réponse à un ticket),
+# page criticism_direct.html ------
 @login_required
 def review_direct_view(request):
-    """
-    Permet la création d'une critique en direct sans réponse à un ticket
-    """
+    """Permet la création d'une critique en direct sans réponse à un ticket."""
     # Intègre les deux formulaires
 
     review_form = ReviewForm()
@@ -219,22 +199,18 @@ def review_direct_view(request):
 
 # ------ Suppression d'une critique, page review_confirm_delete.html ------
 def confirmation_delete_review(request, review_pk=""):
-    """
-    Affiche un message de confirmation de suppression de la critique
-    """
+    """Affiche un message de confirmation de suppression de la critique."""
 
     # Recherche de la ligne correspondante à la PK dans la BD
     review_for_deletion = get_object_or_404(Review, id=review_pk)
-
 
     return render(request, "criticizes/criticism_confirm_delete.html",
                   {"review": review_for_deletion})
 
 
 def delete_review(request, review_pk=""):
-    """
-    Supprime la critique dans le table Review par la suppression de la PK de l'enregistrement
-    """
+    """Supprime la critique dans le table Review par la suppression de la PK de
+    l'enregistrement."""
 
     # # Recherche de la ligne correspondante à la PK dans la BD
     if review_pk == "No":
@@ -250,18 +226,17 @@ def delete_review(request, review_pk=""):
 
     return HttpResponseRedirect(reverse('criticizes:flux'))
 
+
 # ------ Suivi d'un utilisateur, page followers.html ------
 @login_required
 def user_follow_view(request):
-    """
-    Affiche un champ de texte pour y indiquer le nom de l'utilisateur à suivre,
-    ainsi que les abonnements et les abonnés sur la page followers.html
-    """
+    """Affiche un champ de texte pour y indiquer le nom de l'utilisateur à
+    suivre, ainsi que les abonnements et les abonnés sur la page
+    followers.html."""
     # Pour alimenter abonnements et abonnés (sections 2 et 3)
     pk_connected_user = request.user.pk
     followed_by_user = request.user.following.all()
     user_followed_by = UserFollows.objects.filter(followed_user=pk_connected_user)
-
 
     # Pour afficher la saisie de l'utilisateurs à suivre (section 1)
     if request.method == "POST":
@@ -290,15 +265,15 @@ def user_follow_view(request):
         form = UserFollowsForm()
 
     template = 'criticizes/followers.html'
-    context = {"form": form, 'followed_by_user': followed_by_user, 'user_followed_by': user_followed_by}
+    context = {"form": form, 'followed_by_user': followed_by_user,
+               'user_followed_by': user_followed_by}
     return render(request, template, context)
 
 
 def delete_subscription(request):
-    """
-    Supprime l'abonnement dans le table UserFollows par la suppression de la PK de l'enregistrement
-    collecté depuis la page html et de la donnée issue de def list_followers
-    """
+    """Supprime l'abonnement dans le table UserFollows par la suppression de la
+    PK de l'enregistrement collecté depuis la page html et de la donnée issue
+    de def list_followers."""
     pk_in_database = request.POST.get('primary_key_of_subscription')
     # Recherche de la ligne correspondante à la PK dans la BD
     recording_in_UserFollows = UserFollows.objects.get(pk=pk_in_database)
@@ -338,19 +313,19 @@ def flux_ticket_review(request):
     for ticket in reviews:
         tickets_followed.append(ticket.ticket.pk)
 
-    tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda instance: instance.time_created,
-                                 reverse=True)
+    tickets_and_reviews = sorted(chain(tickets, reviews),
+                                 key=lambda instance: instance.time_created, reverse=True)
 
     paginator = Paginator(tickets_and_reviews, 6)
     page = request.GET.get('page')
 
     page_obj = paginator.get_page(page)
 
-
     template = 'criticizes/flux.html'
     context = {'page_obj': page_obj, 'tickets_followed': tickets_followed}
 
     return render(request, template, context=context)
+
 
 # ------ page posts.html ------
 @login_required
@@ -358,8 +333,8 @@ def posts_ticket_review(request):
     tickets = Ticket.objects.filter(user=request.user)
     reviews = Review.objects.filter(user=request.user)
 
-    tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda instance: instance.time_created,
-                                 reverse=True)
+    tickets_and_reviews = sorted(chain(tickets, reviews),
+                                 key=lambda instance: instance.time_created, reverse=True)
 
     paginator = Paginator(tickets_and_reviews, 6)
     page = request.GET.get('page')
@@ -369,5 +344,3 @@ def posts_ticket_review(request):
     template = 'criticizes/posts.html'
     context = {'page_obj': page_obj}
     return render(request, template, context=context)
-
-

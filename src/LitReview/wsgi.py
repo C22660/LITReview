@@ -1,5 +1,4 @@
-"""
-WSGI config for LitReview project.
+"""WSGI config for LitReview project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -7,13 +7,12 @@
 {% block content %}
 <div class="bodyconfirmation">
     <div class="confirmation">
-        <div class="confirmation">
-            <p>Êtes-vous sûr de vouloir supprimer le ticket : {{ ticket.title }}</p>
-            <a href="{% url 'criticizes:delete_ticket' ticket_pk=ticket.pk %}">
-            <button class="btn btn-delete">Oui, supprimer</button></a>
-            <a href="{% url 'criticizes:delete_ticket' ticket_pk="No" %}">
-            <button class="btn btn-cancel">Non, retour</button></a>
-        </div>
+        <p>Êtes-vous sûr de vouloir supprimer le ticket : {{ ticket.title }}</p>
+        <a href="{% url 'criticizes:delete_ticket' ticket_pk=ticket.pk %}">
+        <button class="btn btn-delete">Oui, supprimer</button></a>
+        <a href="{% url 'criticizes:delete_ticket' ticket_pk="No" %}">
+        <button class="btn btn-cancel">Non, retour</button></a>
+    </div>
 </div>
 {% endblock %}
 

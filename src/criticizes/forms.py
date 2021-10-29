@@ -1,17 +1,9 @@
-from sqlite3 import IntegrityError
-
 from django import forms
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.http import HttpResponse, Http404
-from django.shortcuts import get_object_or_404
 
 from criticizes.models import Ticket, Review, UserFollows
 
-
 # formulaire depuis models.py
-
-
 
 
 class TicketForm(forms.ModelForm):
@@ -26,27 +18,6 @@ class TicketForm(forms.ModelForm):
                   "image",
                   ]
 
-        # pour modifier le nom du champ affichier, au lieu de verbose_name dans models :
-        # labels = {"title": "Titre",}
-
-        # si on avait mis la date, on pourrais modifier le widget :
-        # widgets = {"date": forms.SelecDateWidget(years=range(1998, 2040)}
-
-
-        # ---- pour recupérer user, surgage de sav selon modèle Thierry C, avec passage en class
-        # sur la vue ---
-        # ---> msg erreur : TypeError: __init__() takes 1 positional argument but 2 were given
-        # def __init__(self, *args, **kwargs):
-        #     self.request = kwargs.pop('request')
-        #     super().__init__(*args, **kwargs)
-        #
-        # def save(self, commit=True):
-        #     instance = super().save(commit=False)
-        #     # C'est ici, dans save() qu'on récupère l'utilisateur à partir de la request
-        #     instance.user = self.request.user
-        #     if commit:
-        #         instance.save()
-        #     return instance
 
 # RadioSelect options
 RATING_OPTIONS = [
@@ -57,6 +28,7 @@ RATING_OPTIONS = [
     ("4", "4"),
     ("5", "5")
 ]
+
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -86,4 +58,3 @@ class UserFollowsForm(forms.Form):
             raise forms.ValidationError("L'utilisateur est introuvable.")
 
         return data
-

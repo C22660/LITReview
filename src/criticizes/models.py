@@ -1,10 +1,8 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
-from django.urls import reverse
 
 from PIL import Image
-
 
 
 class Ticket(models.Model):
@@ -14,7 +12,8 @@ class Ticket(models.Model):
     # ajout slug facultatif (balk=True signifie Facultatif)?
     # slug = models.SlugField(max_length=128, unique=True, blank=True)
     description = models.TextField(max_length=2048, blank=True)
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     # pour éviter que tous les tickets ne soient supprimer si user supprimer, on peut utiliser
     # on_delete=models.SET_NULL, null=True, blank=True au lieu de on_delete=models.CASCADE
     image = models.ImageField(null=True, blank=True, upload_to='ticket_images')
@@ -35,10 +34,6 @@ class Ticket(models.Model):
         super().save(*args, **kwargs)
         if self.image:
             self.resize_image()
-
-    # # après validation d'un ticket, réoriente la page vers la page flux
-    # def get_absolute_url(self):
-    #     return reverse('criticizes:flux')
 
 
 class Review(models.Model):
