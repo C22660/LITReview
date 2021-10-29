@@ -68,25 +68,20 @@ def update_ticket_view(request, ticket_pk):
 # ------ Suppression d'un ticket, page ticket_confirm_delete.html ------
 def confirmation_delete_ticket(request, ticket_pk=""):
     """Affiche un message de confirmation de suppression du ticket."""
-
+    previous_page = request.META.get('HTTP_REFERER', '/')
     # Recherche de la ligne correspondante à la PK dans la BD
     ticket_for_deletion = get_object_or_404(Ticket, id=ticket_pk)
 
     return render(request, "criticizes/ticket_confirm_delete.html",
-                  {"ticket": ticket_for_deletion})
+                  {"ticket": ticket_for_deletion, 'previous_page': previous_page})
 
 
 def delete_ticket(request, ticket_pk=""):
     """Supprime le ticket dans le table Ticket par la suppression de la PK de
     l'enregistrement."""
 
-    if ticket_pk == "No":
-        return redirect('criticizes:flux')
-
-    else:
-        # Recherche de la ligne correspondante à la PK dans la BD
-        ticket_for_deletion = get_object_or_404(Ticket, id=ticket_pk)
-        ticket_for_deletion.delete()
+    ticket_for_deletion = get_object_or_404(Ticket, id=ticket_pk)
+    ticket_for_deletion.delete()
 
     return HttpResponseRedirect(reverse('criticizes:flux'))
 
@@ -201,28 +196,22 @@ def review_direct_view(request):
 def confirmation_delete_review(request, review_pk=""):
     """Affiche un message de confirmation de suppression de la critique."""
 
+    # renverra la page précédente
+    previous_page = request.META.get('HTTP_REFERER', '/')
+
     # Recherche de la ligne correspondante à la PK dans la BD
     review_for_deletion = get_object_or_404(Review, id=review_pk)
 
     return render(request, "criticizes/criticism_confirm_delete.html",
-                  {"review": review_for_deletion})
+                  {"review": review_for_deletion, 'previous_page': previous_page})
 
 
 def delete_review(request, review_pk=""):
     """Supprime la critique dans le table Review par la suppression de la PK de
     l'enregistrement."""
 
-    # # Recherche de la ligne correspondante à la PK dans la BD
-    if review_pk == "No":
-        return redirect('criticizes:flux')
-        # return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    #     print(review_pk)
-    #     next = request.META.get('HTTP_REFERER', None) or '/'
-    #     response = HttpResponseRedirect(next)
-    #     return response
-    else:
-        review_for_deletion = get_object_or_404(Review, id=review_pk)
-        review_for_deletion.delete()
+    review_for_deletion = get_object_or_404(Review, id=review_pk)
+    review_for_deletion.delete()
 
     return HttpResponseRedirect(reverse('criticizes:flux'))
 

@@ -10,7 +10,8 @@
         <p>Êtes-vous sûr de vouloir supprimer la critique :  {{ review }}</p>
         <a href="{% url 'criticizes:delete_review' review_pk=review.pk %}">
         <button class="btn btn-delete">Oui, supprimer</button></a>
-        <a href="{% url 'criticizes:delete_review' review_pk="No" %}">
+<!--        <a href="{% url 'criticizes:delete_review' review_pk="No" %}">-->
+            <a href="{{ previous_page }}">
         <button class="btn btn-cancel">Non, retour</button></a>
     </div>
 </div>

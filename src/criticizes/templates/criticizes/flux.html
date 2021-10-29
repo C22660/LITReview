@@ -27,7 +27,7 @@
                     <div/>
                 {% elif instance|model_type == 'Review' %}
                     <div class="flux-review-and-ticket">>
-                    {% include 'criticizes/partials/review_snippet.html' with review=instance %}
+                    {% include 'criticizes/partials/review_snippet.html' with review=instance current_page=current_page %}
 
                     </div>
                 {% endif %}
