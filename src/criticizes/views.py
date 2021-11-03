@@ -245,6 +245,11 @@ def user_follow_view(request):
                     messages.add_message(request, messages.INFO, "L'utilisateur est déjà suivi.")
                     # pour éviter le popup "ressoumètre le formulaire"
                     return HttpResponseRedirect(request.path)
+                elif followed == follower:
+                    messages.add_message(request, messages.INFO, "Vous ne pouvez pas vous suivre.")
+                    # pour éviter le popup "ressoumètre le formulaire"
+                    return HttpResponseRedirect(request.path)
+
                 else:
                     relation = UserFollows(user=follower, followed_user=followed)
 

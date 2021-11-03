@@ -52,6 +52,7 @@ class UserFollowsForm(forms.Form):
     def clean_searched_user_name(self):
         # video 109 TH
         data = self.cleaned_data.get('searched_user_name')
+        print(self.cleaned_data)
         try:
             followed = User.objects.get(username=data)
         except User.DoesNotExist:
