@@ -12,20 +12,27 @@ Structuration du site :
 
 
 
-## Informations
+## Informations d'installation et d'exécution avec venv et pip
 
 
 **Configurations et exécution du programme**
-Une fois les fichiers téléchargés depuis le git hub :
+Installation :
+- Cloner ce dépôt de code à l'aide de la commande `$ git clone clone https://github.com/C22660/LITReview.git` (vous pouvez également télécharger le code [en temps qu'archive zip](https://github.com/C22660/LITReview/archive/refs/heads/master.zip))
+- Rendez-vous depuis un terminal à la racine du répertoire ocmovies-api-fr avec la commande `$ cd LITReview`
+- Créer un environnement virtuel pour le projet avec `$ python -m venv env` sous windows ou `$ python3 -m venv env` sous macos ou linux.
+- Activez l'environnement virtuel avec `$ env\Scripts\activate` sous windows ou `$ source env/bin/activate` sous macos ou linux.
+- Installez les dépendances du projet avec la commande `$ pip install -r requirements.txt`
+
+Une fois cette installation effectuée :
 - Appliquer les migrations dans la base de données :
-depuis le terminal > python manage.py migrate
+depuis le terminal > `$ python manage.py migrate`
 
 - Création du superuser (utilisateur avec droits d'administration) :
-depuis le terminal > python manage.py createsuperuser
+depuis le terminal > `$ python manage.py createsuperuser`
 entrer le nom d'utilisateur (Username), Email, et mot de passe (invisible lors de la frappe dans le terminal)
 
 - Lancement du serveur :
-depuis le terminal > python manage.py runserver
+depuis le terminal > `$ python manage.py runserver`
 
 - Accès à la page d'administration :
 Dans la barre d'adresse, ajouter /administration-application
