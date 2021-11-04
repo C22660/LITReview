@@ -41,7 +41,7 @@ L'interface d'administration apparaît
 
 - L'accès à la page d'accueil (page de connexion/inscription) directement depuis 127.0.0.1:8000
 
-## Techologies
+## Technologies
 Python 3.9
 Package ajouté : Django 3.1.6, Pillow 8.3.2
 
