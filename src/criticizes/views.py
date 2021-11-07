@@ -37,6 +37,7 @@ def ticket_view(request):
 @login_required
 def update_ticket_view(request, ticket_pk):
     """Permet la modification d'un ticket."""
+
     if ticket_pk != "":
         ticket_needing_update = get_object_or_404(Ticket, id=ticket_pk)
 
@@ -59,7 +60,7 @@ def update_ticket_view(request, ticket_pk):
                                    "image": ticket_needing_update.image})
 
     context = {
-        "form": form,
+        "form": form, "initial_image": ticket_needing_update.image.url,
     }
 
     return render(request, "criticizes/tickets_update.html", context)
@@ -69,6 +70,7 @@ def update_ticket_view(request, ticket_pk):
 def confirmation_delete_ticket(request, ticket_pk=""):
     """Affiche un message de confirmation de suppression du ticket."""
     previous_page = request.META.get('HTTP_REFERER', '/')
+
     # Recherche de la ligne correspondante à la PK dans la BD
     ticket_for_deletion = get_object_or_404(Ticket, id=ticket_pk)
 

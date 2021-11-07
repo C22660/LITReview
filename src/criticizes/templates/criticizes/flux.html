@@ -10,13 +10,12 @@
     <div class="bodyFlux">
         <div class="buttons-flux">
             <a href="{% url 'criticizes:ticket' %}">
-              <button>Demander une citique</button>
+              <button>Demander une critique</button>
             </a>
 
             <a href="{% url 'criticizes:criticism_direct' %}">
-              <button>Créer une citique</button>
+              <button>Créer une critique</button>
             </a>
-
         </div>
 
         <section class="bodyFluxElements">
@@ -26,7 +25,7 @@
                     {% include 'criticizes/partials/ticket_snippet.html' with ticket=instance %}
                     <div/>
                 {% elif instance|model_type == 'Review' %}
-                    <div class="flux-review-and-ticket">>
+                    <div class="flux-review-and-ticket">
                     {% include 'criticizes/partials/review_snippet.html' with review=instance current_page=current_page %}
 
                     </div>
@@ -58,18 +57,3 @@
 
 {% endblock content %}
 
-<!--        <section class="bodyFlux">-->
-<!--            <h1>Liste des tickets</h1>-->
-<!--            {% for ticket in tickets %}-->
-<!--            <div id="fluxTitleTicket"-->
-<!--            <h2>{{ ticket.title }}</h2>-->
-<!--            <h5> Publié par  <i> {{ ticket.user.username }} </i> {{ticket.time_created|date:'j F Y' }} </h5>-->
-<!--            {{ ticket.pk  }}-->
-<!--            {{ ticket.description  }}-->
-<!--            {% if ticket.image %}-->
-<!--            <img class="avatar" src={{ ticket.image.url }}>-->
-
-<!--            {% endif %}-->
-
-<!--            {% endfor %}-->
-<!--        </section>-->
