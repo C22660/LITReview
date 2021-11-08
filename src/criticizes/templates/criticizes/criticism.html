@@ -15,7 +15,6 @@
                 <p id="date">{{ticket_needing_answer.time_created|date:'f, j F Y' }} </p>
                 <h5> {{ ticket_needing_answer.user.username }} a demandé une critique</h5>
                 <h2>{{ ticket_needing_answer.title }}</h2>
-                    {{ ticket_needing_answer.pk  }}
                 <p id="view-ticket-description"> {{ ticket_needing_answer.description  }} </p>
                     {% if ticket_needing_answer.image %}
                     <img class="avatar" src={{ ticket_needing_answer.image.url }}>
