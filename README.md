@@ -17,8 +17,8 @@ Structuration du site :
 
 **Configurations et exécution du programme**
 Installation :
-- Cloner ce dépôt de code à l'aide de la commande `$ git clone clone https://github.com/C22660/LITReview.git` (vous pouvez également télécharger le code [en temps qu'archive zip](https://github.com/C22660/LITReview/archive/refs/heads/master.zip))
-- Rendez-vous depuis un terminal à la racine du répertoire ocmovies-api-fr avec la commande `$ cd LITReview`
+- Cloner ce dépôt de code à l'aide de la commande `$ git clone https://github.com/C22660/LITReview.git` (vous pouvez également télécharger le code [en temps qu'archive zip](https://github.com/C22660/LITReview/archive/refs/heads/master.zip))
+- Rendez-vous depuis un terminal à la racine du répertoire LITReview avec la commande `$ cd LITReview`
 - Créer un environnement virtuel pour le projet avec `$ python -m venv env` sous windows ou `$ python3 -m venv env` sous macos ou linux.
 - Activez l'environnement virtuel avec `$ env\Scripts\activate` sous windows ou `$ source env/bin/activate` sous macos ou linux.
 - Installez les dépendances du projet avec la commande `$ pip install -r requirements.txt`
